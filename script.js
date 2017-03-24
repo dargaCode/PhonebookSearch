@@ -84,11 +84,33 @@ function Trie() {
   }
 }
 
-function saveJsonFile(trie) {
-  const jsonString = trie.getJsonString();
+// DOM HOOKS
 
-  fs = require('fs');
-  fs.writeFile('trie.json', jsonString);
+const searchInput = document.querySelector('#search-input');
+const resultsDiv = document.querySelector('#results-div');
+
+// EVENT BINDINGS
+
+searchInput.addEventListener('input', function() {
+  const input = searchInput.value;
+  const searchResults = trie.prefixSearch(input);
+
+  displayResults(searchResults);
+});
+
+// FUNCTIONS
+
+function displayResults(results) {
+  const tempDiv = document.createElement('div');
+
+  for (const result of results) {
+    const paragraph = document.createElement('p');
+
+    paragraph.textContent = result;
+    tempDiv.appendChild(paragraph);
+  }
+
+  resultsDiv.innerHTML = tempDiv.innerHTML;
 }
 
 // MAIN
@@ -102,10 +124,4 @@ for (const name of names) {
   trie.store(name);
 }
 
-for (prefix of searchPrefixes) {
-  const searchResults = trie.prefixSearch(prefix);
-
-  console.log('\nsearch prefix "%s":\n ', prefix, searchResults);
-}
-
-saveJsonFile(trie);
+searchInput.focus();

@@ -1,0 +1,14 @@
+body {
+  background: #ddd;
+  padding-top: 50px;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+p {
+  margin: 5px;
+}
