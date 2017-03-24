@@ -95,19 +95,25 @@ const resultsDiv = document.querySelector('#results-div');
 // EVENT BINDINGS
 
 searchInput.addEventListener('input', function() {
-  const input = searchInput.value;
+  const queryString = this.value;
 
+  handleQueryInput(queryString);
+});
+
+// EVENT HANDLERS
+
+function handleQueryInput(queryString) {
   let searchResults;
 
   // don't display the entire trie on backspace to empty string
-  if (input === '') {
+  if (queryString === '') {
     searchResults = null;
   } else  {
-    searchResults = trie.prefixSearch(input);
+    searchResults = trie.prefixSearch(queryString);
   }
 
   displayResults(searchResults);
-});
+}
 
 // FUNCTIONS
 
