@@ -82,6 +82,11 @@ function Trie() {
   }
 }
 
+// CONSTANTS
+
+const PROVIDERS_SOURCE_PATH = './providers.json';
+const PROCESSED_TRIE_PATH = 'provider-trie.json';
+
 // FUNCTIONS
 
 function processProviders(providers) {
@@ -98,7 +103,10 @@ function saveTrieJson(trie) {
   const fs = require('fs');
   const jsonString = trie.getJsonString();
 
-  fs.writeFile('provider-trie.json', jsonString, function (err) {
+  console.log('Saved trie json:\n');
+  console.log(jsonString);
+
+  fs.writeFile(PROCESSED_TRIE_PATH, jsonString, function (err) {
     if (err) {
       console.log(err);
     }
@@ -108,8 +116,7 @@ function saveTrieJson(trie) {
 // MAIN
 
 (function main() {
-  const providers = require('./providers.json');
-
+  const providers = require(PROVIDERS_SOURCE_PATH);
   const providersTrie = processProviders(providers);
 
   saveTrieJson(providersTrie);
