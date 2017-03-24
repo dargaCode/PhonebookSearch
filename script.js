@@ -4,6 +4,15 @@
 function Trie() {
   rootNode = {};
 
+  this.importNodesFromJsonString = function(jsonString) {
+    const parsedObject = JSON.parse(jsonString);
+
+    console.log('Data parsed from JSON:');
+    console.log(parsedObject);
+
+    rootNode = parsedObject;
+  }
+
   this.store = function(word) {
     if (word === '') {
       return;
@@ -86,6 +95,7 @@ function Trie() {
 
 const DEFAULT_RESULT_MESSAGE = 'results go here';
 const SEARCH_FAIL_MESSAGE = 'no results found';
+const TRIE_JSON_PATH = 'provider-trie.json';
 
 // DOM HOOKS
 
@@ -117,6 +127,19 @@ function handleQueryInput(queryString) {
 
 // FUNCTIONS
 
+function loadTrieJson(callback) {
+  const request = new XMLHttpRequest();
+  // request.overrideMimeType("application/json");
+  request.open('GET', TRIE_JSON_PATH, true);
+
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == "200") {
+      callback(request.responseText);
+    }
+  };
+  request.send();
+}
+
 function displayResults(results) {
   const tempDiv = document.createElement('div');
 
@@ -141,11 +164,8 @@ function displayResults(results) {
 
 const trie = new Trie();
 
-const names = 'by bye bus bust busted buster bustier burr but butt butte butts butted butter buttress bury buried burn burned a an art arthritis arts arty artist artsy'.split(' ').sort();
-const searchPrefixes = 'a by bus buster but butte'.split(' ');
-
-for (const name of names) {
-  trie.store(name);
-}
+loadTrieJson(function(responseText) {
+  trie.importNodesFromJsonString(responseText);
+});
 
 searchInput.focus();
