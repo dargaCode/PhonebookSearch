@@ -1,6 +1,4 @@
 
-// CONSTANTS
-
 // CLASSES
 
 function Trie() {
@@ -84,6 +82,11 @@ function Trie() {
   }
 }
 
+// CONSTANTS
+
+const DEFAULT_RESULT_MESSAGE = 'results go here';
+const SEARCH_FAIL_MESSAGE = 'no results found';
+
 // DOM HOOKS
 
 const searchInput = document.querySelector('#search-input');
@@ -93,7 +96,15 @@ const resultsDiv = document.querySelector('#results-div');
 
 searchInput.addEventListener('input', function() {
   const input = searchInput.value;
-  const searchResults = trie.prefixSearch(input);
+
+  let searchResults;
+
+  // don't display the entire trie on backspace to empty string
+  if (input === '') {
+    searchResults = null;
+  } else  {
+    searchResults = trie.prefixSearch(input);
+  }
 
   displayResults(searchResults);
 });
@@ -102,6 +113,13 @@ searchInput.addEventListener('input', function() {
 
 function displayResults(results) {
   const tempDiv = document.createElement('div');
+
+  if (results === null) {
+    results = [];
+    results.push(DEFAULT_RESULT_MESSAGE);
+  } else if (results.length === 0) {
+    results.push(SEARCH_FAIL_MESSAGE);
+  }
 
   for (const result of results) {
     const paragraph = document.createElement('p');
