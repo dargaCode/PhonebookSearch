@@ -84,8 +84,8 @@ function Trie() {
 
 // CONSTANTS
 
-const PROVIDERS_SOURCE_PATH = './providers.json';
-const PROCESSED_TRIE_PATH = 'provider-trie.json';
+const PROVIDERS_SOURCE_PATH = '../data/providers-input.json';
+const PROCESSED_TRIE_PATH = './data/provider-trie.json';
 
 // FUNCTIONS
 

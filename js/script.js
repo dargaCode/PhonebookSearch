@@ -93,9 +93,10 @@ function Trie() {
 
 // CONSTANTS
 
+const TRIE_JSON_PATH = '/data/provider-trie.json';
+
 const DEFAULT_RESULT_MESSAGE = 'results go here';
 const SEARCH_FAIL_MESSAGE = 'no results found';
-const TRIE_JSON_PATH = 'provider-trie.json';
 
 // DOM HOOKS
 
