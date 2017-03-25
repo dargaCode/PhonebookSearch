@@ -20,7 +20,9 @@ function Trie() {
 
     let node = rootNode;
 
-    for (const char of word) {
+    for (let char of word) {
+      char = char.toLowerCase();
+
       if (!node[char]) {
         node[char] = {};
       }
@@ -41,7 +43,9 @@ function Trie() {
     } else {
       let node = rootNode;
 
-      for (const char of word) {
+      for (let char of word) {
+        char = char.toLowerCase();
+
         if (node[char]) {
           node = node[char];
         } else {
@@ -58,7 +62,9 @@ function Trie() {
     let node = rootNode;
     let results = [];
 
-    for (const char of prefix) {
+    for (let char of prefix) {
+      char = char.toLowerCase();
+
       if (node[char]) {
         node = node[char];
       } else {
@@ -74,7 +80,7 @@ function Trie() {
   }
 
   function recursiveSearch(node, results) {
-    for (const key in node) {
+    for (let key in node) {
       if (key === 'word') {
         results.push(node.word);
       } else {
