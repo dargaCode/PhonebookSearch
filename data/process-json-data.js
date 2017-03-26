@@ -17,7 +17,7 @@ function processProviders(providers) {
   const providersTrie = new Trie();
 
   for (const provider of providers) {
-    providersTrie.store(provider.first_name || 'blah');
+    providersTrie.storeProvider(provider);
   }
 
   return providersTrie;
