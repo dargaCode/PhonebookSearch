@@ -61,7 +61,7 @@ function displayResults(results) {
   for (const result of results) {
     const paragraph = document.createElement('p');
 
-    paragraph.textContent = result;
+    paragraph.textContent = result.display_name;
     tempDiv.appendChild(paragraph);
   }
 

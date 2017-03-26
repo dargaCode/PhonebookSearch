@@ -17,7 +17,7 @@ function Trie() {
     const providerKeywords = getProviderKeywords(provider);
 
     for (keyword of providerKeywords) {
-      this.store(keyword, provider.name);
+      this.store(keyword, provider);
     }
   }
 
@@ -123,16 +123,12 @@ function Trie() {
       const firstName = provider.first_name;
       const lastName = provider.last_name;
       const fullName = `${firstName} ${lastName}`;
-      // unified name between people and orgs, for easier display
-      provider.name = fullName;
 
       keywords = [fullName, lastName];
     // organizations
     } else {
       const orgName = provider.organization_name;
       const orgWords = orgName.split(' ')
-      // unified name between people and orgs, for easier display
-      provider.name = orgName;
 
       keywords.push(orgName);
 

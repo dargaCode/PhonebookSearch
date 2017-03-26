@@ -17,10 +17,40 @@ function processProviders(providers) {
   const providersTrie = new Trie();
 
   for (const provider of providers) {
+    categorizeProvider(provider);
+    addDisplayName(provider);
     providersTrie.storeProvider(provider);
   }
 
   return providersTrie;
+}
+
+// add useful tagging to provider for later use
+function categorizeProvider(provider) {
+  let providerType;
+
+  if (provider.first_name) {
+    providerType = 'person';
+  } else if (provider.organization_name) {
+    providerType = 'organization';
+  } else {
+    console.log('ERROR: malformed provider json');
+  }
+
+  provider.type = providerType;
+}
+
+// add common field to display later
+function addDisplayName(provider) {
+  let displayName;
+
+  if (provider.type === 'person') {
+    displayName = `${provider.first_name} ${provider.last_name}`;
+  } else {
+    displayName = provider.organization_name;
+  }
+
+  provider.display_name = displayName;
 }
 
 function saveTrieJson(trie) {
