@@ -13,14 +13,6 @@ function Trie() {
     rootNode = parsedObject;
   }
 
-  this.storeProvider = function(provider) {
-    const providerKeywords = getProviderKeywords(provider);
-
-    for (keyword of providerKeywords) {
-      this.store(keyword, provider);
-    }
-  }
-
   // store a simple keyword or store a specified result by a keyword
   this.store = function(keyword, result = null) {
     // don't bother continuing for an empty string
@@ -109,38 +101,6 @@ function Trie() {
     const json = JSON.stringify(rootNode);
 
     return json;
-  }
-
-  // HELPER METHODS
-
-  // we'll store each provider by multiple words, so they can be searched more easily. For people, the full name and last name. For orgs, the full org name, and each word of the org name after the first word.
-  // Don't need to store the first name or the first org word, since those are already included by storing the entire name.
-  function getProviderKeywords(provider) {
-    let keywords = [];
-
-    // people
-    if (provider.first_name) {
-      const firstName = provider.first_name;
-      const lastName = provider.last_name;
-      const fullName = `${firstName} ${lastName}`;
-
-      keywords = [fullName, lastName];
-    // organizations
-    } else {
-      const orgName = provider.organization_name;
-      const orgWords = orgName.split(' ')
-
-      keywords.push(orgName);
-
-      // skip the first word, since it's already included in the full org name
-      for (let i = 0; i < orgWords.length; i++) {
-        if (i >= 1) {
-          keywords.push(orgWords[i]);
-        }
-      }
-    }
-
-    return keywords;
   }
 }
 
