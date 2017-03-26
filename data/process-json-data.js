@@ -94,12 +94,12 @@ function getProviderKeywords(provider) {
 function saveTrieJson(trie) {
   const jsonString = trie.getJsonString();
 
-  console.log('Saved trie json:\n');
-  console.log(jsonString);
-
   fs.writeFile(PROCESSED_TRIE_PATH, jsonString, function (err) {
     if (err) {
       console.log(err);
+    } else {
+      console.log('Saved trie json:\n');
+      console.log(jsonString);
     }
   });
 }
