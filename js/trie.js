@@ -17,13 +17,20 @@ function Trie() {
     const providerKeywords = getProviderKeywords(provider);
 
     for (keyword of providerKeywords) {
-      this.store(keyword);
+      this.store(keyword, provider.name);
     }
   }
 
-  this.store = function(keyword) {
+  // store a simple keyword or store a specified result by a keyword
+  this.store = function(keyword, result = null) {
+    // don't bother continuing for an empty string
     if (keyword === '') {
       return;
+    }
+
+    // allow override of the keyword, so that the keyword and result stored don't have to be identital. If no result override is provided, though, keyword is stored as the result.
+    if (!result) {
+      result = keyword;
     }
 
     let node = rootNode;
@@ -38,8 +45,8 @@ function Trie() {
       node = node[char];
     }
 
-    if (!node.keyword) {
-      node.keyword = keyword;
+    if (!node.result) {
+      node.result = result;
     }
   }
 
@@ -89,8 +96,8 @@ function Trie() {
 
   function recursiveSearch(node, results) {
     for (let key in node) {
-      if (key === 'keyword') {
-        results.push(node.keyword);
+      if (key === 'result') {
+        results.push(node.result);
       } else {
         const childNode = node[key];
         recursiveSearch(childNode, results);
@@ -116,12 +123,16 @@ function Trie() {
       const firstName = provider.first_name;
       const lastName = provider.last_name;
       const fullName = `${firstName} ${lastName}`;
+      // unified name between people and orgs, for easier display
+      provider.name = fullName;
 
       keywords = [fullName, lastName];
     // organizations
     } else {
       const orgName = provider.organization_name;
       const orgWords = orgName.split(' ')
+      // unified name between people and orgs, for easier display
+      provider.name = orgName;
 
       keywords.push(orgName);
 
