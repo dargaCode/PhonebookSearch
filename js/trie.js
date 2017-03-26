@@ -13,14 +13,14 @@ function Trie() {
     rootNode = parsedObject;
   }
 
-  this.store = function(word) {
-    if (word === '') {
+  this.store = function(keyword) {
+    if (keyword === '') {
       return;
     }
 
     let node = rootNode;
 
-    for (let char of word) {
+    for (let char of keyword) {
       char = char.toLowerCase();
 
       if (!node[char]) {
@@ -30,20 +30,20 @@ function Trie() {
       node = node[char];
     }
 
-    if (!node.word) {
-      node.word = word;
+    if (!node.keyword) {
+      node.keyword = keyword;
     }
   }
 
-  this.contains = function(word) {
+  this.contains = function(keyword) {
     let wordFound = true;
 
-    if (word === '') {
+    if (keyword === '') {
       wordFound = false;
     } else {
       let node = rootNode;
 
-      for (let char of word) {
+      for (let char of keyword) {
         char = char.toLowerCase();
 
         if (node[char]) {
@@ -81,8 +81,8 @@ function Trie() {
 
   function recursiveSearch(node, results) {
     for (let key in node) {
-      if (key === 'word') {
-        results.push(node.word);
+      if (key === 'keyword') {
+        results.push(node.keyword);
       } else {
         const childNode = node[key];
         recursiveSearch(childNode, results);
