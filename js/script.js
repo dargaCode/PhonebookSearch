@@ -23,14 +23,18 @@ searchInput.addEventListener('input', function() {
 function handleQueryInput(queryString) {
   let searchResults;
 
-  // don't display the entire trie on backspace to empty string
-  if (queryString === '') {
-    searchResults = null;
+  // don't display the entire trie on backspace to empty string or spaces only
+  if (queryString.trim() === '') {
+    displayMessage(DEFAULT_RESULT_MESSAGE);
   } else  {
     searchResults = trie.prefixSearch(queryString);
-  }
 
-  displayResults(searchResults);
+    if (searchResults.length === 0) {
+      displayMessage(SEARCH_FAIL_MESSAGE);
+    } else {
+      displayResults(searchResults);
+    }
+  }
 }
 
 // FUNCTIONS
@@ -48,15 +52,18 @@ function loadTrieJson(callback) {
   request.send();
 }
 
+function displayMessage(message) {
+  const tempDiv = document.createElement('div');
+  const paragraph = document.createElement('p');
+
+  paragraph.textContent = message;
+  tempDiv.appendChild(paragraph);
+
+  resultsDiv.innerHTML = tempDiv.innerHTML;
+}
+
 function displayResults(results) {
   const tempDiv = document.createElement('div');
-
-  if (results === null) {
-    results = [];
-    results.push(DEFAULT_RESULT_MESSAGE);
-  } else if (results.length === 0) {
-    results.push(SEARCH_FAIL_MESSAGE);
-  }
 
   for (const result of results) {
     const paragraph = document.createElement('p');
