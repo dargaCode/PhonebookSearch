@@ -29,7 +29,7 @@
   "zip": "11002",
   "npi": 23556
 }, {
-  "organization_name": "Johns Hopkins",
+  "organization_name": "Johns Hopkins Children's Hospital",
   "zip": "01234",
   "npi": 22222
 }, {
@@ -37,7 +37,19 @@
   "zip": "93110",
   "npi": 33333
 }, {
+  "organization_name": "Mercy Hospital",
+  "zip": "48065",
+  "npi": 99999
+}, {
+  "organization_name": "Mercy Children's Hospital",
+  "zip": "94061",
+  "npi": 36262
+}, {
   "organization_name": "General Hospital",
   "zip": "11002",
   "npi": 44533
+}, {
+  "organization_name": "General Hospital",
+  "zip": "53927",
+  "npi": 36928
 }]
