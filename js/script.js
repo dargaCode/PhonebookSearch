@@ -21,18 +21,17 @@ searchInput.addEventListener('input', function() {
 // EVENT HANDLERS
 
 function handleQueryInput(queryString) {
-  let searchResults;
-
   // don't display the entire trie on backspace to empty string or spaces only
   if (queryString.trim() === '') {
     displayMessage(DEFAULT_RESULT_MESSAGE);
   } else  {
-    searchResults = trie.prefixSearch(queryString);
+    const searchResults = trie.prefixSearch(queryString);
 
     if (searchResults.length === 0) {
       displayMessage(SEARCH_FAIL_MESSAGE);
     } else {
-      displayResults(searchResults);
+      const resultObj = buildResultObject(searchResults);
+      displayResults(resultObj);
     }
   }
 }
@@ -62,12 +61,63 @@ function displayMessage(message) {
   resultsDiv.innerHTML = tempDiv.innerHTML;
 }
 
-function displayResults(results) {
+function buildResultObject(providers) {
+  const idSet = new Set();
+  const resultObj = {};
+
+  for (const provider of providers) {
+    const providerId = provider.npi;
+    const duplicate = idSet.has(providerId);
+
+    // ignore duplicates
+    if (!duplicate) {
+      idSet.add(providerId);
+
+      const providerDisplayName = provider.display_name;
+      const providerZip = provider.zip;
+
+      // matching display name already tracked; add onto it
+      if (resultObj[providerDisplayName]) {
+        const existingProviderObj = resultObj[providerDisplayName];
+
+        existingProviderObj.locationSet.add(providerZip);
+        existingProviderObj.providers.push(provider);
+      // begin tracking display name
+      } else {
+        const newProviderObj = {
+            locationSet: new Set(),
+            providers: [],
+        };
+
+        newProviderObj.locationSet.add(providerZip);
+        newProviderObj.providers.push(provider);
+
+        resultObj[providerDisplayName] = newProviderObj;
+      }
+    };
+
+    // console.log(idSet);
+    // console.log(resultObj);
+
+  }
+
+  return resultObj;
+}
+
+function displayResults(resultObj) {
+  console.log(resultObj);
+
   const tempDiv = document.createElement('div');
 
-  for (const result of results) {
+  for (let name in resultObj) {
+    console.log(name);
     const paragraph = document.createElement('p');
-    const displayText = `${result.display_name} (${result.npi})`;
+
+    const nameCount = resultObj[name].providers.length;
+    const locationCount = resultObj[name].locationSet.size;
+    const namePlural = nameCount > 1 ? 's' : '';
+    const locationPlural = nameCount > 1 ? 's' : '';
+    const displayText = `${name} (${nameCount} provider${namePlural} in ${locationCount} location${locationPlural})`;
 
     paragraph.textContent = displayText;
     tempDiv.appendChild(paragraph);
