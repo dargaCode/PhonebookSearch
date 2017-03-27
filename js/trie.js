@@ -13,16 +13,16 @@ function Trie() {
     rootNode = parsedObject;
   }
 
-  // store a simple keyword or store a specified result by a keyword
-  this.store = function(keyword, result = null) {
+  // store a simple keyword or store a specified value by a keyword
+  this.store = function(keyword, value = null) {
     // don't bother continuing for an empty string
     if (keyword === '') {
       return;
     }
 
-    // allow override of the keyword, so that the keyword and result stored don't have to be identital. If no result override is provided, though, keyword is stored as the result.
-    if (!result) {
-      result = keyword;
+    // allow override of the keyword, so that the keyword and value stored don't have to be identital. If no value override is provided, though, keyword is stored as the value.
+    if (!value) {
+      value = keyword;
     }
 
     let node = rootNode;
@@ -37,12 +37,14 @@ function Trie() {
       node = node[char];
     }
 
-    if (!node.result) {
-      node.result = result;
+    if (!node.values) {
+      node.values = [];
     }
+
+    node.values.push(value);
   }
 
-  this.contains = function(keyword) {
+  this.containsKey = function(keyword) {
     let wordFound = true;
 
     if (keyword === '') {
@@ -81,20 +83,22 @@ function Trie() {
     }
 
     // append all words which include the prefix
-    recursiveSearch(node, results);
+    results = recursiveSearch(node, results);
 
     return results;
   }
 
   function recursiveSearch(node, results) {
     for (let key in node) {
-      if (key === 'result') {
-        results.push(node.result);
+      if (key === 'values') {
+        results = results.concat(node.values);
       } else {
         const childNode = node[key];
-        recursiveSearch(childNode, results);
+        results = recursiveSearch(childNode, results);
       }
     }
+
+    return results;
   }
 
   this.getJsonString = function() {

@@ -60,8 +60,9 @@ function displayResults(results) {
 
   for (const result of results) {
     const paragraph = document.createElement('p');
+    const displayText = `${result.display_name} (${result.npi})`;
 
-    paragraph.textContent = result.display_name;
+    paragraph.textContent = displayText;
     tempDiv.appendChild(paragraph);
   }
 
