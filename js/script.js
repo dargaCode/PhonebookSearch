@@ -4,6 +4,9 @@
 const TRIE_JSON_PATH = '/data/provider-trie.json';
 const DEFAULT_RESULT_MESSAGE = 'results go here';
 const SEARCH_FAIL_MESSAGE = 'no results found';
+const NAME_CARD_DIV_CLASS = 'name-card';
+const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
+const SUMMARY_PARAGRAPH_CLASS = 'summary';
 
 // DOM HOOKS
 
@@ -124,12 +127,15 @@ function createProviderNameCard(displayName, nameBundle) {
 
   nameCardDiv.appendChild(nameParagraph);
   nameCardDiv.appendChild(summaryParagraph);
+  nameCardDiv.classList.add(NAME_CARD_DIV_CLASS);
 
   return nameCardDiv;
 }
 
 function createDisplayNameParagraph(displayName) {
   const nameParagraph = createParagraph(displayName);
+
+  nameParagraph.classList.add(DISPLAY_NAME_PARAGRAPH_CLASS);
 
   return nameParagraph;
 }
@@ -149,6 +155,8 @@ function createSummaryParagraph(displayName, nameBundle) {
   }
 
   const summaryParagraph = createParagraph(summaryText);
+
+  summaryParagraph.classList.add(SUMMARY_PARAGRAPH_CLASS);
 
   return summaryParagraph;
 }
