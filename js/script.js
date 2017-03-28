@@ -24,10 +24,11 @@ searchInput.addEventListener('input', function() {
 // EVENT HANDLERS
 
 function handleQueryInput(queryString) {
+  queryString = queryString.trim();
+  const validQuery = queryString != '';
+
   // don't display the entire trie on backspace to empty string or spaces only
-  if (queryString.trim() === '') {
-    displayMessage(DEFAULT_RESULT_MESSAGE);
-  } else  {
+  if (validQuery) {
     const searchResults = trie.prefixSearch(queryString);
 
     if (searchResults.length === 0) {
@@ -36,6 +37,8 @@ function handleQueryInput(queryString) {
       const resultObj = bundleResults(searchResults);
       displayResultsInDom(resultObj);
     }
+  } else {
+    clearResults();
   }
 }
 
@@ -167,6 +170,10 @@ function createParagraph(textContent) {
   paragraph.textContent = textContent;
 
   return paragraph;
+}
+
+function clearResults() {
+  resultsDiv.innerHTML = '';
 }
 
 // MAIN
