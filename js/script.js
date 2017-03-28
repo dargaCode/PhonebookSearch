@@ -149,7 +149,7 @@ function createSummaryParagraph(displayName, nameBundle) {
     summaryText = `We found 1 ${displayName} nearby`;
   } else {
     const locationCount = nameBundle.locationSet.size;
-    const locationPlural = nameCount > 1 ? 's' : '';
+    const locationPlural = locationCount > 1 ? 's' : '';
 
     summaryText = `We found ${nameCount} ${displayName}s practicing in ${locationCount} location${locationPlural} nearby`;
   }
