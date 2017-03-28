@@ -30,8 +30,8 @@ function handleQueryInput(queryString) {
     if (searchResults.length === 0) {
       displayMessage(SEARCH_FAIL_MESSAGE);
     } else {
-      const resultObj = buildResultObject(searchResults);
-      displayResults(resultObj);
+      const resultObj = bundleResults(searchResults);
+      displayResultsInDom(resultObj);
     }
   }
 }
@@ -53,15 +53,16 @@ function loadTrieJson(callback) {
 
 function displayMessage(message) {
   const tempDiv = document.createElement('div');
-  const paragraph = document.createElement('p');
 
-  paragraph.textContent = message;
-  tempDiv.appendChild(paragraph);
+  const messageParagraph = createParagraph(message);
+
+  tempDiv.appendChild(messageParagraph);
 
   resultsDiv.innerHTML = tempDiv.innerHTML;
 }
 
-function buildResultObject(providers) {
+// bundle the providers array into object keys by their common display names. Track how many unique providers and locations match each display name.
+function bundleResults(providers) {
   const idSet = new Set();
   const resultObj = {};
 
@@ -95,35 +96,69 @@ function buildResultObject(providers) {
         resultObj[providerDisplayName] = newProviderObj;
       }
     };
-
-    // console.log(idSet);
-    // console.log(resultObj);
-
   }
 
   return resultObj;
 }
 
-function displayResults(resultObj) {
+function displayResultsInDom(resultObj) {
   console.log(resultObj);
 
   const tempDiv = document.createElement('div');
 
-  for (let name in resultObj) {
-    console.log(name);
-    const paragraph = document.createElement('p');
+  for (let displayName in resultObj) {
+    const nameBundle = resultObj[displayName];
 
-    const nameCount = resultObj[name].providers.length;
-    const locationCount = resultObj[name].locationSet.size;
-    const namePlural = nameCount > 1 ? 's' : '';
-    const locationPlural = nameCount > 1 ? 's' : '';
-    const displayText = `${name} (${nameCount} provider${namePlural} in ${locationCount} location${locationPlural})`;
+    const providerNameCard = createProviderNameCard(displayName, nameBundle);
 
-    paragraph.textContent = displayText;
-    tempDiv.appendChild(paragraph);
+    tempDiv.appendChild(providerNameCard);
   }
 
   resultsDiv.innerHTML = tempDiv.innerHTML;
+}
+
+function createProviderNameCard(displayName, nameBundle) {
+  const nameCardDiv = document.createElement('div');
+  const nameParagraph = createDisplayNameParagraph(displayName);
+  const summaryParagraph = createSummaryParagraph(displayName, nameBundle);
+
+  nameCardDiv.appendChild(nameParagraph);
+  nameCardDiv.appendChild(summaryParagraph);
+
+  return nameCardDiv;
+}
+
+function createDisplayNameParagraph(displayName) {
+  const nameParagraph = createParagraph(displayName);
+
+  return nameParagraph;
+}
+
+function createSummaryParagraph(displayName, nameBundle) {
+  const nameCount = nameBundle.providers.length;
+
+  let summaryText;
+
+  if (nameCount === 1) {
+    summaryText = `We found 1 ${displayName} nearby`;
+  } else {
+    const locationCount = nameBundle.locationSet.size;
+    const locationPlural = nameCount > 1 ? 's' : '';
+
+    summaryText = `We found ${nameCount} ${displayName}s practicing in ${locationCount} location${locationPlural} nearby`;
+  }
+
+  const summaryParagraph = createParagraph(summaryText);
+
+  return summaryParagraph;
+}
+
+function createParagraph(textContent) {
+  const paragraph = document.createElement('p');
+
+  paragraph.textContent = textContent;
+
+  return paragraph;
 }
 
 // MAIN
