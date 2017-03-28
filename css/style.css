@@ -3,21 +3,39 @@
   box-sizing: border-box;;
 }
 
-body {
+html, body {
   font-family: helvetica;
+  margin: 0;
+  padding: 0 0;
   background: #fafafa;
-  padding: 50px 0;
 }
 
 h1 {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0 0 5px;
+  text-transform: uppercase;
+}
+
+h2 {
   font-size: 18px;
   font-weight: normal;
   margin:  0 0 20px;
 }
 
+header {
+  text-align: center;
+  padding: 26px 20px 70px;
+}
+
+header p {
+  font-size: 10px;
+  margin: 0;
+}
+
 .container {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 auto 120px;
   padding: 26px 28px 40px;
   text-align: center;
   background: #fff;
@@ -31,8 +49,6 @@ input {
   width: 100%;
   margin: 0 0 16px;
   padding: 16px 12px;
-/*  box-shadow: 0 0 1px #aaa;
-  border-radius: 2px;*/
 }
 
 input:focus {
@@ -43,7 +59,7 @@ input:focus {
   font-size: 12px;
 }
 
-.name-card {
+.results-div .name-card {
   text-align: left;
   margin-bottom: 10px;
   padding: 7px 12px;
@@ -51,16 +67,11 @@ input:focus {
   border-radius: 2px;
 }
 
-.display-name {
-
-}
-
-.summary {
+.name-card .summary {
   font-size: 11px;
   color: #b3b3b3;
 }
 
-p {
+.name-card p {
   margin: 5px;
 }
-
