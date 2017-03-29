@@ -2,7 +2,6 @@
 // CONSTANTS
 
 const TRIE_JSON_PATH = './data/provider-trie.json';
-const DEFAULT_RESULT_MESSAGE = 'results go here';
 const SEARCH_FAIL_MESSAGE = 'no results found';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
