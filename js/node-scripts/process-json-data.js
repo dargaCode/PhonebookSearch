@@ -2,27 +2,38 @@
 // CONSTANTS
 
 const TRIE_CLASS_PATH = '../trie-class.js';
-const PROVIDERS_SOURCE_PATH = '../../data/providers-input.json';
-const PROCESSED_TRIE_PATH = './data/providers-processed.json';
+const PROVIDERS_JSON_PATH = '../../data/providers-input.json';
+const PROCESSED_DATA_JSON_PATH = './data/providers-processed.json';
 
 // DEPENDENCIES
 
-const providers = require(PROVIDERS_SOURCE_PATH);
+const providers = require(PROVIDERS_JSON_PATH);
 const Trie = require(TRIE_CLASS_PATH);
 const fs = require('fs');
 
 // FUNCTIONS
 
 function processProviders(providers) {
-  const providersTrie = new Trie();
+  const providerTrie = new Trie();
+  const providerDict = {};
 
   for (const provider of providers) {
     categorizeProvider(provider);
     addDisplayName(provider);
-    storeProvider(providersTrie, provider);
+    // store the provider's npi id in a tree by its display name for fast lookup.
+    storeProviderInTrie(provider, providerTrie);
+    // store the provider's other data in a dict by its npi id, to help keep the tree as small as possible.
+    storeProviderInDict(provider, providerDict);
   }
 
-  return providersTrie;
+  // combine both structures for storage into json, for fewer requests
+  const processedObj = {
+    // Trie only surfaces a jsonString, not references to its actual nodes.
+    trie: JSON.parse(providerTrie.getJsonString()),
+    dict: providerDict,
+  }
+
+  return processedObj;
 }
 
 // add useful tagging to provider for later use
@@ -53,11 +64,22 @@ function addDisplayName(provider) {
   provider.display_name = displayName;
 }
 
-storeProvider = function(trie, provider) {
+function storeProviderInTrie(provider, trie) {
   const providerKeywords = getProviderKeywords(provider);
+  const providerNpi = provider.npi;
 
   for (keyword of providerKeywords) {
-    trie.store(keyword, provider);
+    trie.store(keyword, providerNpi);
+  }
+}
+
+function storeProviderInDict(provider, dict) {
+  const providerNpi = provider.npi;
+
+  const duplicateNpi = dict[providerNpi];
+
+  if (!duplicateNpi) {
+    dict[providerNpi] = provider;
   }
 }
 
@@ -91,14 +113,14 @@ function getProviderKeywords(provider) {
   return keywords;
 }
 
-function saveTrieJson(trie) {
-  const jsonString = trie.getJsonString();
+function saveProviderJson(outputObj) {
+  const jsonString = JSON.stringify(outputObj);
 
-  fs.writeFile(PROCESSED_TRIE_PATH, jsonString, function (err) {
+  fs.writeFile(PROCESSED_DATA_JSON_PATH, jsonString, function (err) {
     if (err) {
       console.log(err);
     } else {
-      console.log('Saved trie json:\n');
+      console.log('Saved provider json:\n');
       console.log(jsonString);
     }
   });
@@ -107,7 +129,7 @@ function saveTrieJson(trie) {
 // MAIN
 
 (function main() {
-  const providersTrie = processProviders(providers);
+  const providerObj = processProviders(providers);
 
-  saveTrieJson(providersTrie);
+  saveProviderJson(providerObj);
 }());
