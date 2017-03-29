@@ -53,8 +53,7 @@ function storeProviderInDict(provider, dict) {
   }
 }
 
-// we'll store each provider by multiple words, so they can be searched more easily. For people, the full name and last name. For orgs, the full org name, and each word of the org name after the first word.
-// Don't need to store the first name or the first org word, since those are already included by storing the entire name.
+// we'll store each provider by first and last name, or all of the words in its org name. Then prefix searches will work for all the words in a query, so long as we filter the results in the browser script to providers that match all queries.
 function getProviderKeywords(provider) {
   let keywords = [];
 
@@ -62,22 +61,13 @@ function getProviderKeywords(provider) {
   if (provider.first_name) {
     const firstName = provider.first_name;
     const lastName = provider.last_name;
-    const fullName = `${firstName} ${lastName}`;
 
-    keywords = [fullName, lastName];
+    keywords = [firstName, lastName];
   // organizations
   } else {
     const orgName = provider.organization_name;
-    const orgWords = orgName.split(' ')
 
-    keywords.push(orgName);
-
-    // skip the first word, since it's already included in the full org name
-    for (let i = 0; i < orgWords.length; i++) {
-      if (i >= 1) {
-        keywords.push(orgWords[i]);
-      }
-    }
+    keywords = orgName.split(' ')
   }
 
   return keywords;
@@ -99,7 +89,7 @@ function saveProviderJson(outputObj) {
 // MAIN
 
 (function main() {
-  const providerObj = processProviders(providers);
+  const providerDataObj = processProviders(providers);
 
-  saveProviderJson(providerObj);
+  saveProviderJson(providerDataObj);
 }());
