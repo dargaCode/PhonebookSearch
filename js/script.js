@@ -1,7 +1,7 @@
 
 // CONSTANTS
 
-const TRIE_JSON_PATH = './data/provider-trie.json';
+const PROVIDER_JSON_PATH = './data/providers-processed.json';
 const SEARCH_FAIL_MESSAGE = 'no results found';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
@@ -46,7 +46,7 @@ function handleQueryInput(queryString) {
 function loadTrieJson(callback) {
   const request = new XMLHttpRequest();
   // request.overrideMimeType("application/json");
-  request.open('GET', TRIE_JSON_PATH, true);
+  request.open('GET', PROVIDER_JSON_PATH, true);
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == "200") {

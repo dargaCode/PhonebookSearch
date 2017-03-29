@@ -1,9 +1,9 @@
 
 // CONSTANTS
 
-const TRIE_CLASS_PATH = '../js/trie.js';
-const PROVIDERS_SOURCE_PATH = './providers-input.json';
-const PROCESSED_TRIE_PATH = './data/provider-trie.json';
+const TRIE_CLASS_PATH = '../trie-class.js';
+const PROVIDERS_SOURCE_PATH = '../../data/providers-input.json';
+const PROCESSED_TRIE_PATH = './data/providers-processed.json';
 
 // DEPENDENCIES
 
