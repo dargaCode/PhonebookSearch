@@ -7,9 +7,6 @@ function Trie() {
   this.importNodesFromJsonString = function(jsonString) {
     const parsedObject = JSON.parse(jsonString);
 
-    console.log('Data parsed from JSON:');
-    console.log(parsedObject);
-
     rootNode = parsedObject;
   }
 
