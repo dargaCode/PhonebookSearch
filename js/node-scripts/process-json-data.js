@@ -18,8 +18,6 @@ function processProviders(providers) {
   const providerDict = {};
 
   for (const provider of providers) {
-    categorizeProvider(provider);
-    addDisplayName(provider);
     // store the provider's npi id in a tree by its display name for fast lookup.
     storeProviderInTrie(provider, providerTrie);
     // store the provider's other data in a dict by its npi id, to help keep the tree as small as possible.
@@ -34,34 +32,6 @@ function processProviders(providers) {
   }
 
   return processedObj;
-}
-
-// add useful tagging to provider for later use
-function categorizeProvider(provider) {
-  let providerType;
-
-  if (provider.first_name) {
-    providerType = 'person';
-  } else if (provider.organization_name) {
-    providerType = 'organization';
-  } else {
-    console.log('ERROR: malformed provider json');
-  }
-
-  provider.type = providerType;
-}
-
-// add common field to display later
-function addDisplayName(provider) {
-  let displayName;
-
-  if (provider.type === 'person') {
-    displayName = `${provider.first_name} ${provider.last_name}`;
-  } else {
-    displayName = provider.organization_name;
-  }
-
-  provider.display_name = displayName;
 }
 
 function storeProviderInTrie(provider, trie) {
