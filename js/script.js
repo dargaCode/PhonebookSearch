@@ -28,13 +28,17 @@ function handleQueryInput(queryString) {
 
   // don't display the entire trie on backspace to empty string or spaces only
   if (validQuery) {
-    const searchResults = trie.prefixSearch(queryString);
+    const searchResults = providerTrie.prefixSearch(queryString);
 
     if (searchResults.length === 0) {
-      displayMessage(SEARCH_FAIL_MESSAGE);
+      displayMessageInDom(SEARCH_FAIL_MESSAGE);
     } else {
-      const resultObj = bundleResults(searchResults);
-      displayResultsInDom(resultObj);
+      const resultBundleObj = bundleResults(searchResults);
+
+      console.log('Search result bundle object:');
+      console.log(resultBundleObj);
+
+      displayResultsInDom(resultBundleObj);
     }
   } else {
     clearResults();
@@ -43,20 +47,24 @@ function handleQueryInput(queryString) {
 
 // FUNCTIONS
 
-function loadTrieJson(callback) {
+function loadProviderJson(callback) {
   const request = new XMLHttpRequest();
-  // request.overrideMimeType("application/json");
   request.open('GET', PROVIDER_JSON_PATH, true);
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == "200") {
-      callback(request.responseText);
+      const providerDataObj = JSON.parse(request.responseText);
+
+      console.log('Imported provider data from JSON:');
+      console.log(providerDataObj);
+
+      callback(providerDataObj);
     }
   };
   request.send();
 }
 
-function displayMessage(message) {
+function displayMessageInDom(message) {
   const tempDiv = document.createElement('div');
 
   const messageParagraph = createParagraph(message);
@@ -67,38 +75,39 @@ function displayMessage(message) {
 }
 
 // bundle the providers array into object keys by their common display names. Track how many unique providers and locations match each display name.
-function bundleResults(providers) {
+function bundleResults(resultNpis) {
   const idSet = new Set();
   const resultObj = {};
 
-  for (const provider of providers) {
-    const providerId = provider.npi;
-    const duplicate = idSet.has(providerId);
+  for (const providerNpi of resultNpis) {
+    const provider = providerDict[providerNpi];
+
+    const duplicate = idSet.has(providerNpi);
 
     // ignore duplicates
     if (!duplicate) {
-      idSet.add(providerId);
+      idSet.add(providerNpi);
 
-      const providerDisplayName = provider.display_name;
+      const providerDisplayName = getDisplayName(provider);
       const providerZip = provider.zip;
 
       // matching display name already tracked; add onto it
       if (resultObj[providerDisplayName]) {
-        const existingProviderObj = resultObj[providerDisplayName];
+        const existingProviderBundle = resultObj[providerDisplayName];
 
-        existingProviderObj.locationSet.add(providerZip);
-        existingProviderObj.providers.push(provider);
+        existingProviderBundle.locationSet.add(providerZip);
+        existingProviderBundle.providers.push(provider);
       // begin tracking display name
       } else {
-        const newProviderObj = {
+        const newProviderBundle = {
             locationSet: new Set(),
             providers: [],
         };
 
-        newProviderObj.locationSet.add(providerZip);
-        newProviderObj.providers.push(provider);
+        newProviderBundle.locationSet.add(providerZip);
+        newProviderBundle.providers.push(provider);
 
-        resultObj[providerDisplayName] = newProviderObj;
+        resultObj[providerDisplayName] = newProviderBundle;
       }
     };
   }
@@ -106,9 +115,21 @@ function bundleResults(providers) {
   return resultObj;
 }
 
-function displayResultsInDom(resultObj) {
-  console.log(resultObj);
+function getDisplayName(provider) {
+  let displayName;
 
+  // person
+  if (provider.first_name) {
+    displayName = `${provider.first_name} ${provider.last_name}`;
+  // organization
+  } else {
+    displayName = provider.organization_name;
+  }
+
+  return displayName;
+}
+
+function displayResultsInDom(resultObj) {
   const tempDiv = document.createElement('div');
 
   for (let displayName in resultObj) {
@@ -177,10 +198,16 @@ function clearResults() {
 
 // MAIN
 
-const trie = new Trie();
+// must be a better way to make these available to events than making them global variables
+const providerTrie = new Trie();
+let providerDict = {};
 
-loadTrieJson(function(responseText) {
-  trie.importNodesFromJsonString(responseText);
+loadProviderJson(function(providerDataObj) {
+  // trie only imports nodes in string form, for safety
+  const trieJsonText = JSON.stringify(providerDataObj.trie);
+
+  providerTrie.importNodesFromJsonString(trieJsonText);
+  providerDict = providerDataObj.dict;
+
+  searchInput.focus();
 });
-
-searchInput.focus();
