@@ -7,6 +7,14 @@ const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
 
+const ES_PLURALIZER_WORD_ENDINGS = {
+  s: true,
+  x: true,
+  z: true,
+  ch: true,
+  sh: true,
+}
+
 // DOM HOOKS
 
 const searchInput = document.querySelector('#search-input');
@@ -171,10 +179,11 @@ function createSummaryParagraph(displayName, nameBundle) {
   if (nameCount === 1) {
     summaryText = `We found 1 ${displayName} nearby`;
   } else {
+    const pluralName = getPluralName(displayName);
     const locationCount = nameBundle.locationSet.size;
-    const locationPlural = locationCount > 1 ? 's' : '';
+    const locationPluralizer = locationCount > 1 ? 's' : '';
 
-    summaryText = `We found ${nameCount} ${displayName}s practicing in ${locationCount} location${locationPlural} nearby`;
+    summaryText = `We found ${nameCount} ${pluralName} practicing in ${locationCount} location${locationPluralizer} nearby`;
   }
 
   const summaryParagraph = createParagraph(summaryText);
@@ -182,6 +191,22 @@ function createSummaryParagraph(displayName, nameBundle) {
   summaryParagraph.classList.add(SUMMARY_PARAGRAPH_CLASS);
 
   return summaryParagraph;
+}
+
+function getPluralName(name) {
+  const lastLetter = name.slice(-1);
+  const lastTwoLetters = name.slice(-2);
+  let pluralName;
+
+  const esPluralizer = ES_PLURALIZER_WORD_ENDINGS[lastLetter] || ES_PLURALIZER_WORD_ENDINGS[lastTwoLetters];
+
+  if (esPluralizer) {
+    pluralName = `${name}es`;
+  } else {
+    pluralName = `${name}s`;
+  }
+
+  return pluralName;
 }
 
 function createParagraph(textContent) {
