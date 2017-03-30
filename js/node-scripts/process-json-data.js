@@ -3,7 +3,7 @@
 
 const TRIE_CLASS_PATH = '../trie-class.js';
 const PROVIDERS_JSON_PATH = '../../data/providers-input.json';
-const PROCESSED_DATA_JSON_PATH = './data/providers-processed.json';
+const PROCESSED_DATA_JSON_PATH = `${__dirname}/../../data/providers-processed.json`;
 
 // DEPENDENCIES
 

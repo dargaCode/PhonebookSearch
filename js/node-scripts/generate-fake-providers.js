@@ -1,7 +1,7 @@
 
 // CONSTANTS
 
-const PROVIDER_OUTPUT_PATH = './data/providers-input.json';
+const PROVIDER_OUTPUT_PATH = `${__dirname}/../../data/providers-input.json`;
 
 // DEPENDENCIES
 
