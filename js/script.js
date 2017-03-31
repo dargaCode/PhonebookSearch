@@ -46,7 +46,7 @@ function handleQueryInput(queryString) {
       console.log('Search result bundle object:');
       console.log(resultBundleObj);
 
-      displayResultsInDom(resultBundleObj);
+      addResultsToDom(resultBundleObj);
     }
   } else {
     clearResultsDiv();
@@ -138,7 +138,7 @@ function getDisplayName(provider) {
   return displayName;
 }
 
-function displayResultsInDom(resultObj) {
+function addResultsToDom(resultObj) {
   const tempDiv = document.createElement('div');
 
   for (let displayName in resultObj) {
@@ -147,9 +147,15 @@ function displayResultsInDom(resultObj) {
     const providerNameCard = createProviderNameCard(displayName, nameBundle);
 
     tempDiv.appendChild(providerNameCard);
+
+    providerNameCard.addEventListener('click', function() {
+      sendProviderRequest(nameBundle.providers);
+    });
   }
 
-  resultsDiv.innerHTML = tempDiv.innerHTML;
+  // append elements (rather than using innerHTML assignment) so that divs can bring along their events.
+  clearResultsDiv();
+  resultsDiv.appendChild(tempDiv);
 }
 
 function createProviderNameCard(displayName, nameBundle) {
@@ -220,6 +226,21 @@ function createParagraph(textContent) {
 
 function clearResultsDiv() {
   resultsDiv.innerHTML = '';
+}
+
+function sendProviderRequest(providers) {
+  const providersJsonString = JSON.stringify(providers);
+  const request = new XMLHttpRequest();
+
+  request.open('POST', 'index.html', true);
+
+  request.onreadystatechange = function() {
+    if (request.readyState === 4 && request.statue === '200') {
+      console.log('Request sent:', providersJsonString);
+    }
+  }
+
+  request.send(providersJsonString);
 }
 
 // MAIN
