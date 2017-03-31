@@ -2,6 +2,8 @@
 // CONSTANTS
 
 const PROVIDER_OUTPUT_PATH = `${__dirname}/../../data/providers-input.json`;
+const PROVIDER_COUNT = 1000;
+
 
 // DEPENDENCIES
 
@@ -228,6 +230,6 @@ function saveJson(providers) {
 
 // MAIN
 
-const providers = createProviders(1000);
+const providers = createProviders(PROVIDER_COUNT);
 
 saveJson(providers);
