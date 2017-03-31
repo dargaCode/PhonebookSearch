@@ -7,13 +7,13 @@ const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
 
-const ES_PLURALIZER_WORD_ENDINGS = {
-  s: true,
-  x: true,
-  z: true,
-  ch: true,
-  sh: true,
-}
+const ES_PLURALIZER_WORD_ENDINGS = new Set([
+  's',
+  'x',
+  'z',
+  'ch',
+  'sh',
+]);
 
 // DOM HOOKS
 
@@ -199,7 +199,7 @@ function getPluralName(name) {
   const lastTwoLetters = name.slice(-2);
   let pluralName;
 
-  const esPluralizer = ES_PLURALIZER_WORD_ENDINGS[lastLetter] || ES_PLURALIZER_WORD_ENDINGS[lastTwoLetters];
+  const esPluralizer = ES_PLURALIZER_WORD_ENDINGS.has(lastLetter) || ES_PLURALIZER_WORD_ENDINGS.has(lastTwoLetters);
 
   if (esPluralizer) {
     pluralName = `${name}es`;
