@@ -49,7 +49,7 @@ function handleQueryInput(queryString) {
       displayResultsInDom(resultBundleObj);
     }
   } else {
-    clearResults();
+    clearResultsDiv();
   }
 }
 
@@ -218,7 +218,7 @@ function createParagraph(textContent) {
   return paragraph;
 }
 
-function clearResults() {
+function clearResultsDiv() {
   resultsDiv.innerHTML = '';
 }
 
