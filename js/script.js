@@ -69,6 +69,7 @@ function loadProviderJson(callback) {
       callback(providerDataObj);
     }
   };
+
   request.send();
 }
 
