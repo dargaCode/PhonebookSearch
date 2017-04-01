@@ -18,7 +18,7 @@ const ES_PLURALIZER_WORD_ENDINGS = new Set([
 // DOM HOOKS
 
 const searchInput = document.querySelector('#search-input');
-const resultsDiv = document.querySelector('#results-div');
+const resultsHolderDiv = document.querySelector('#search-results-holder');
 
 // EVENT BINDINGS
 
@@ -112,7 +112,7 @@ function displayMessageInDom(message) {
 
   tempDiv.appendChild(messageParagraph);
 
-  resultsDiv.innerHTML = tempDiv.innerHTML;
+  resultsHolderDiv.innerHTML = tempDiv.innerHTML;
 }
 
 // bundle the providers array into object keys by their common display names. Track how many unique providers and locations match each display name.
@@ -188,7 +188,7 @@ function addResultsToDom(resultObj) {
 
   // append elements (rather than using innerHTML assignment) so that divs can bring along their events.
   clearResultsDiv();
-  resultsDiv.appendChild(tempDiv);
+  resultsHolderDiv.appendChild(tempDiv);
 }
 
 function createProviderNameCard(displayName, nameBundle) {
@@ -258,7 +258,7 @@ function createParagraph(textContent) {
 }
 
 function clearResultsDiv() {
-  resultsDiv.innerHTML = '';
+  resultsHolderDiv.innerHTML = '';
 }
 
 // MAIN

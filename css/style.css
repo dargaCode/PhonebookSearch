@@ -54,11 +54,11 @@ header {
 
 /*SEARCH*/
 
-.search .results-div {
+.search .search-results-holder {
   font-size: 12px;
 }
 
-.results-div .name-card {
+.search-results-holder .name-card {
   text-align: left;
   margin-bottom: 10px;
   padding: 7px 12px;
