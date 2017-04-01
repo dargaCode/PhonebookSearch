@@ -2,10 +2,11 @@
 // CONSTANTS
 
 const PROVIDER_JSON_PATH = './data/providers-processed.json';
-const SEARCH_FAIL_MESSAGE = 'no results found';
+const SEARCH_FAIL_MESSAGE = 'No results found!';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
+const CURRENT_PAGE = 'index.html';
 
 const ES_PLURALIZER_WORD_ENDINGS = new Set([
   's',
@@ -267,7 +268,7 @@ function sendProviderRequest(providers) {
   const providersJsonString = JSON.stringify(providers);
   const request = new XMLHttpRequest();
 
-  request.open('POST', 'index.html', true);
+  request.open('POST', CURRENT_PAGE, true);
 
   request.onreadystatechange = function() {
     if (request.readyState === 4 && request.statue === '200') {

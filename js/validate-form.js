@@ -3,6 +3,8 @@
 
 const SUBMIT_DISABLED_MESSAGE = 'Complete the form to continue enrollment';
 const SUBMIT_ENABLED_MESSAGE = 'I understand and wish to continue with enrollment';
+const CURRENT_PAGE = 'form.html';
+const SEARCH_PAGE = 'index.html';
 
 // DOM HOOKS
 
@@ -92,7 +94,7 @@ function sentRequestFromObj(payload) {
   const payloadString = JSON.stringify(payload);
 
   const request = new XMLHttpRequest();
-  request.open('POST', 'form.html', true);
+  request.open('POST', CURRENT_PAGE, true);
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == "200") {
@@ -120,7 +122,7 @@ function generateQueryString(payloadObj) {
 }
 
 function redirectToSearch(queryString) {
-  const searchUrl = `index.html${queryString}`;
+  const searchUrl = `${SEARCH_PAGE}${queryString}`;
 
   window.location = searchUrl;
 }
