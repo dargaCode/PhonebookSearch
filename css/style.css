@@ -37,11 +37,6 @@ input:focus {
   outline: none;
 }
 
-input[type=checkbox]:focus {
-  /*since it would be invisible otherwise*/
-  outline: auto;
-}
-
 .container {
   max-width: 500px;
   margin: 0 auto 120px;
@@ -52,7 +47,7 @@ input[type=checkbox]:focus {
   border-radius: 2px;
 }
 
-/*COMMON HEADER*/
+/*HEADER*/
 
 header {
   text-align: center;
@@ -62,68 +57,6 @@ header {
 header p {
   font-size: 10px;
   margin: 0;
-}
-
-/*REGISTRATION FORM*/
-
-.form-container {
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.form-container p {
-  font-size: 1.05em;
-  text-align: left;
-  margin: 18px auto;
-}
-
-.form-container form {
-  text-align: left;
-}
-
-.form-container .columns {
-  /*remove the space between inline-block children*/
-  font-size: 0;
-}
-
-.form-container .column {
-  display: inline-block;
-  /*leave room for the gap*/
-  width: 48%;
-}
-
-/*create the gap between the two forms*/
-.form-container .column:nth-of-type(1) {
-  margin-right: 4%;
-}
-
-.form-container input {
-  font-family: helvetica;
-  font-size: 12px;
-  width: 100%;
-  margin: 0 0 16px;
-  padding: 14px 12px;
-  border-radius: 2px;
-  border: 1px solid #eee;
-  background: #fcfcfc;
-}
-
-.form-container input.consent {
-  /*override 100% width on inputs*/
-  width: auto;
-  margin-right: 5px;
-}
-
-.form-container label {
-  display: inline-block;
-  font-size: 11px;
-  margin-bottom: 6px;
-  /*prevent text selection on the labels, since clicking them focuses their associated input*/
-  -webkit-user-select: none;
-}
-
-.form-container .submit.disabled {
-  color: #aaa;
 }
 
 /*PROVIDER SEARCH*/
