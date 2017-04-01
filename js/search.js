@@ -6,7 +6,6 @@ const SEARCH_FAIL_MESSAGE = 'No results found!';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
-const CURRENT_PAGE = 'search.html';
 
 const ES_PLURALIZER_WORD_ENDINGS = new Set([
   's',
@@ -185,7 +184,8 @@ function addResultsToDom(resultObj) {
     tempDiv.appendChild(providerNameCard);
 
     providerNameCard.addEventListener('click', function() {
-      sendProviderRequest(nameBundle.providers);
+      const providersJson = JSON.stringify(nameBundle.providers);
+      alert(`${displayName} Provider Data:\n\n${providersJson}`);
     });
   }
 
@@ -262,21 +262,6 @@ function createParagraph(textContent) {
 
 function clearResultsDiv() {
   resultsDiv.innerHTML = '';
-}
-
-function sendProviderRequest(providers) {
-  const providersJsonString = JSON.stringify(providers);
-  const request = new XMLHttpRequest();
-
-  request.open('POST', CURRENT_PAGE, true);
-  request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-  request.onreadystatechange = function() {
-    if (request.readyState === 4 && request.statue === '200') {
-      console.log('Request sent:', providersJsonString);
-    }
-  }
-
-  request.send(providersJsonString);
 }
 
 // MAIN
