@@ -9,6 +9,7 @@ const PROVIDER_COUNT = 1000;
 
 const fs = require('fs');
 
+// duplicate values adjust probabilities
 const providerTypes = [
   'person',
   'person',
@@ -17,6 +18,7 @@ const providerTypes = [
   'org',
 ]
 
+// most common male and female names in the US
 const firstNames = [
   'James',
   'John',
