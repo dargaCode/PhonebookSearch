@@ -92,12 +92,12 @@ function getFormContents() {
 
 function sentRequestFromObj(payload) {
   const payloadString = JSON.stringify(payload);
-
   const request = new XMLHttpRequest();
-  request.open('POST', CURRENT_PAGE, true);
 
+  request.open('POST', CURRENT_PAGE, true);
+  request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
   request.onreadystatechange = function () {
-    if (request.readyState == 4 && request.status == "200") {
+    if (request.readyState == 4 && request.status == '200') {
       console.log(request.responseText);
     }
   };

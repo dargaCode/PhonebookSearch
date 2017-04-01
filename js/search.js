@@ -58,10 +58,10 @@ function handleQueryInput(queryString) {
 
 function loadProviderJson(callback) {
   const request = new XMLHttpRequest();
-  request.open('GET', PROVIDER_JSON_PATH, true);
 
+  request.open('GET', PROVIDER_JSON_PATH, true);
   request.onreadystatechange = function () {
-    if (request.readyState == 4 && request.status == "200") {
+    if (request.readyState == 4 && request.status == '200') {
       const providerDataObj = JSON.parse(request.responseText);
 
       console.log('Imported provider data from JSON:');
@@ -269,7 +269,7 @@ function sendProviderRequest(providers) {
   const request = new XMLHttpRequest();
 
   request.open('POST', CURRENT_PAGE, true);
-
+  request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
   request.onreadystatechange = function() {
     if (request.readyState === 4 && request.statue === '200') {
       console.log('Request sent:', providersJsonString);
