@@ -36,7 +36,7 @@ function handleQueryInput(queryString) {
 
   // don't display the entire trie on backspace to empty string or spaces only
   if (validQuery) {
-    const searchResults = providerTrie.prefixSearch(queryString);
+    const searchResults = multiWordSearch(queryString);
 
     if (searchResults.length === 0) {
       displayMessageInDom(SEARCH_FAIL_MESSAGE);
@@ -71,6 +71,41 @@ function loadProviderJson(callback) {
   };
 
   request.send();
+}
+
+// run a search for each word and only return the results common between all.
+function multiWordSearch(queryString) {
+  const queryWords = queryString.split(' ');
+  const searchResultSets = [];
+
+  for (queryWord of queryWords) {
+    const results = providerTrie.prefixSearch(queryWord);
+    const resultSet = new Set(results);
+
+    searchResultSets.push(resultSet);
+  }
+
+  const commonResults = getCommonResults(searchResultSets);
+
+  return commonResults;
+}
+
+function getCommonResults(searchResultSets) {
+  const commonResults = [];
+
+  const firstSet = searchResultSets.shift();
+
+  for (result of firstSet) {
+    const commonResult = searchResultSets.every(function(set) {
+      return set.has(result);
+    });
+
+    if (commonResult) {
+      commonResults.push(result);
+    }
+  }
+
+  return commonResults;
 }
 
 function displayMessageInDom(message) {
