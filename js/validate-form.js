@@ -3,8 +3,8 @@
 
 const SUBMIT_DISABLED_MESSAGE = 'Complete the form to continue enrollment';
 const SUBMIT_ENABLED_MESSAGE = 'I understand and wish to continue with enrollment';
-const CURRENT_PAGE = 'form.html';
-const SEARCH_PAGE = 'index.html';
+const CURRENT_PAGE = 'index.html';
+const SEARCH_PAGE = 'search.html';
 
 // DOM HOOKS
 

@@ -6,7 +6,7 @@ const SEARCH_FAIL_MESSAGE = 'No results found!';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
-const CURRENT_PAGE = 'index.html';
+const CURRENT_PAGE = 'search.html';
 
 const ES_PLURALIZER_WORD_ENDINGS = new Set([
   's',
