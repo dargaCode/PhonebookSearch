@@ -23,6 +23,12 @@ h2 {
   margin:  0 0 20px;
 }
 
+h3 {
+  font-size: 17px;
+  font-weight: normal;
+  margin: 20px 0 5px;
+}
+
 input {
   font-family: helvetica;
   font-size: 12px;
@@ -72,5 +78,35 @@ header {
 }
 
 .name-card p {
+  margin: 5px;
+}
+
+/*PROVIDER INFO MODAL*/
+
+.provider-info-modal {
+  text-align: center;
+  font-size: 12px;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0;
+  border: 2px solid blue;
+  color: red;
+}
+
+.provider-info-modal .provider-data-holder {
+  /*height: 400px;*/
+  overflow: auto;
+  margin: 0;
+  padding: 0 20px;
+  border: 2px solid green;
+}
+
+.provider-data-holder .data-card {
+  margin: 10px 0;
+  padding: 7px 12px;
+  outline: 2px solid orange;
+}
+
+.data-card p {
   margin: 5px;
 }
