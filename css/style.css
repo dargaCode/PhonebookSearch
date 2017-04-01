@@ -13,10 +13,8 @@ html, body {
 }
 
 h1 {
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 16px;
   margin: 0 0 5px;
-  text-transform: uppercase;
 }
 
 h2 {
@@ -54,14 +52,9 @@ header {
   padding: 26px 20px 70px;
 }
 
-header p {
-  font-size: 10px;
-  margin: 0;
-}
+/*SEARCH*/
 
-/*PROVIDER SEARCH*/
-
-.results-div {
+.search .results-div {
   font-size: 12px;
 }
 
