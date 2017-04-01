@@ -43,9 +43,6 @@ function handleQueryInput(queryString) {
     } else {
       const resultBundleObj = bundleResults(searchResults);
 
-      console.log('Search result bundle object:');
-      console.log(resultBundleObj);
-
       addResultsToDom(resultBundleObj);
     }
   } else {
