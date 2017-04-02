@@ -11,13 +11,23 @@ function ResultsModal() {
 
   // DOM HOOKS
 
+  const providerInfoModal = document.querySelector('#provider-info-modal');
   const providerNameH2 = document.querySelector('#provider-name-h2');
   const dataHolderDiv = document.querySelector('#provider-data-holder');
 
   // EVENT BINDINGS
 
+  providerInfoModal.addEventListener('click', hideModal);
 
   // EVENT HANDLERS
+
+  function hideModal() {
+    providerInfoModal.classList.add('hidden');
+  }
+
+  function showModal() {
+    providerInfoModal.classList.remove('hidden');
+  };
 
 
   // FUNCTIONS
@@ -35,6 +45,8 @@ function ResultsModal() {
 
     dataHolderDiv.innerHTML = tempDiv.innerHTML;
     providerNameH2.textContent = displayName;
+
+    showModal();
   }
 
   function getProviderDataCard(provider) {

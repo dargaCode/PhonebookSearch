@@ -92,6 +92,10 @@ header {
   box-shadow: 0 0 5px #777;
 }
 
+.provider-info-modal.hidden {
+  display: none;
+}
+
 .provider-info-modal .provider-data-holder {
   max-height: 440px;
   overflow: auto;
