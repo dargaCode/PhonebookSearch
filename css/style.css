@@ -84,12 +84,21 @@ header {
 
 /*PROVIDER INFO MODAL*/
 
+/*Enables the modal to stay centered and the proper width*/
+.modal-wrapper {
+  width: 580px;
+  margin: 0 auto;
+}
+
 .provider-info-modal {
+  position: fixed;
+  top: 140px;
   font-size: 12px;
   max-width: 580px;
+  width: 100%;
   margin: 0 auto;
   padding: 20px 0 10px;
-  box-shadow: 0 0 5px #777;
+  box-shadow: 0 0 25px #777;
 }
 
 .provider-info-modal.hidden {
