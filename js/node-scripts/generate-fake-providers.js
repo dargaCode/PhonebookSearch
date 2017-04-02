@@ -210,11 +210,17 @@ function createProviders(num) {
 }
 
 function randomElement(array) {
-  const index = Math.floor(Math.random() * array.length);
+  const index = getRandomNumberUpTo(array.length);
 
   const element = array[index];
 
   return element;
+}
+
+function getRandomNumberUpTo(max) {
+  const random = Math.floor(Math.random() * max);
+
+  return random;
 }
 
 function saveJson(providers) {
