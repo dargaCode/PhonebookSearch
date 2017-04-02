@@ -26,7 +26,7 @@ h2 {
 h3 {
   font-size: 17px;
   font-weight: normal;
-  margin: 20px 0 5px;
+  margin: 0 0 10px;
 }
 
 input {
@@ -84,27 +84,25 @@ header {
 /*PROVIDER INFO MODAL*/
 
 .provider-info-modal {
-  text-align: center;
   font-size: 12px;
   max-width: 580px;
   margin: 0 auto;
-  padding: 0;
-  border: 2px solid blue;
-  color: red;
+  padding: 20px 0 10px;
+  box-shadow: 0 0 5px #777;
 }
 
 .provider-info-modal .provider-data-holder {
-  /*height: 400px;*/
+  max-height: 440px;
   overflow: auto;
   margin: 0;
   padding: 0 20px;
-  border: 2px solid green;
 }
 
 .provider-data-holder .data-card {
   margin: 10px 0;
   padding: 7px 12px;
-  outline: 2px solid orange;
+  box-shadow: 0 0 1px #aaa;
+  border-radius: 2px;
 }
 
 .data-card p {
