@@ -181,8 +181,7 @@ function addResultsToDom(resultObj) {
     tempDiv.appendChild(providerNameCard);
 
     providerNameCard.addEventListener('click', function() {
-      const providersJson = JSON.stringify(nameBundle.providers);
-      alert(`${displayName} Provider Data:\n\n${providersJson}`);
+      resultsModal.displayProviders(displayName, nameBundle.providers);
     });
   }
 
@@ -265,6 +264,7 @@ function clearResultsDiv() {
 
 // must be a better way to make these available to events than making them global variables
 const providerTrie = new Trie();
+const resultsModal = new ResultsModal();
 let providerDict = {};
 
 loadProviderJson(function(providerDataObj) {
