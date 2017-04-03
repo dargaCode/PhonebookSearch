@@ -17,7 +17,7 @@ const ES_PLURALIZER_WORD_ENDINGS = new Set([
 
 // DOM HOOKS
 
-const searchInput = document.querySelector('#search-input');
+const searchInput =      document.querySelector('#search-input');
 const resultsHolderDiv = document.querySelector('#search-results-holder');
 
 // EVENT BINDINGS
@@ -216,13 +216,13 @@ function createSummaryParagraph(displayName, nameBundle) {
   let summaryText;
 
   if (nameCount === 1) {
-    summaryText = `We found 1 ${displayName} nearby`;
+    summaryText = `We found 1 ${displayName}`;
   } else {
     const pluralName = getPluralName(displayName);
     const locationCount = nameBundle.locationSet.size;
     const locationPluralizer = locationCount > 1 ? 's' : '';
 
-    summaryText = `We found ${nameCount} ${pluralName} practicing in ${locationCount} location${locationPluralizer} nearby`;
+    summaryText = `We found ${nameCount} ${pluralName} in ${locationCount} location${locationPluralizer}`;
   }
 
   const summaryParagraph = createParagraph(summaryText);
