@@ -14,19 +14,23 @@ function ResultsModal() {
   const providerInfoModal = document.querySelector('#provider-info-modal');
   const providerNameH2 = document.querySelector('#provider-name-h2');
   const dataHolderDiv = document.querySelector('#provider-data-holder');
+  const searchOverlayDiv = document.querySelector('#search-overlay-div');
 
   // EVENT BINDINGS
 
   providerInfoModal.addEventListener('click', hideModal);
+  searchOverlayDiv.addEventListener('click', hideModal);
 
   // EVENT HANDLERS
 
   function hideModal() {
     providerInfoModal.classList.add('hidden');
+    searchOverlayDiv.classList.add('hidden');
   }
 
   function showModal() {
     providerInfoModal.classList.remove('hidden');
+    searchOverlayDiv.classList.remove('hidden');
   };
 
 
