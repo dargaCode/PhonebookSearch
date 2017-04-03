@@ -12,9 +12,11 @@ function ResultsModal() {
   // DOM HOOKS
 
   const providerInfoModal = document.querySelector('#provider-info-modal');
-  const providerNameH2 = document.querySelector('#provider-name-h2');
-  const dataHolderDiv = document.querySelector('#provider-data-holder');
-  const searchOverlayDiv = document.querySelector('#search-overlay-div');
+  const providerNameH2    = document.querySelector('#provider-name-h2');
+  const dataHolderDiv     = document.querySelector('#provider-data-holder');
+  const searchOverlayDiv  = document.querySelector('#search-overlay-div');
+  const body              = document.querySelector('body');
+  const bodyWrapperDiv    = document.querySelector('#body-wrapper-div');
 
   // EVENT BINDINGS
 
@@ -23,18 +25,31 @@ function ResultsModal() {
 
   // EVENT HANDLERS
 
-  function hideModal() {
-    providerInfoModal.classList.add('hidden');
-    searchOverlayDiv.classList.add('hidden');
-  }
-
   function showModal() {
     providerInfoModal.classList.remove('hidden');
-    searchOverlayDiv.classList.remove('hidden');
+    searchOverlayDiv .classList.remove('hidden');
+
+    preventBodyScrolling();
   };
 
+  function hideModal() {
+    providerInfoModal.classList.add('hidden');
+    searchOverlayDiv .classList.add('hidden');
+
+    enableBodyScrolling();
+  }
 
   // FUNCTIONS
+
+  function preventBodyScrolling() {
+    body          .classList.add('prevent-body-scroll');
+    bodyWrapperDiv.classList.add('prevent-body-scroll');
+  }
+
+  function enableBodyScrolling() {
+    body          .classList.remove('prevent-body-scroll');
+    bodyWrapperDiv.classList.remove('prevent-body-scroll');
+  }
 
   this.displayProviders = function(displayName, providers) {
     const tempDiv = document.createElement('div');
