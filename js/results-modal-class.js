@@ -17,11 +17,12 @@ function ResultsModal() {
   const searchOverlayDiv  = document.querySelector('#search-overlay-div');
   const body              = document.querySelector('body');
   const bodyWrapperDiv    = document.querySelector('#body-wrapper-div');
+  const closeModalButton  = document.querySelector('#close-modal-button');
 
   // EVENT BINDINGS
 
-  providerInfoModal.addEventListener('click', hideModal);
   searchOverlayDiv.addEventListener('click', hideModal);
+  closeModalButton.addEventListener('click', hideModal);
 
   // EVENT HANDLERS
 
