@@ -3,6 +3,10 @@ function ResultsModal() {
 
   // CONSTANTS
 
+  const HIDE_CLASS = 'hidden';
+  const LOCK_SCROLL_CLASS = 'prevent-body-scroll';
+  const PROVIDER_DATA_CLASS = 'data-card';
+
   const VISIBLE_DATA_KEYS = [
     'address',
     'city',
@@ -27,15 +31,15 @@ function ResultsModal() {
   // EVENT HANDLERS
 
   function showModal() {
-    providerInfoModal.classList.remove('hidden');
-    searchOverlayDiv .classList.remove('hidden');
+    providerInfoModal.classList.remove(HIDE_CLASS);
+    searchOverlayDiv .classList.remove(HIDE_CLASS);
 
     preventBodyScrolling();
   };
 
   function hideModal() {
-    providerInfoModal.classList.add('hidden');
-    searchOverlayDiv .classList.add('hidden');
+    providerInfoModal.classList.add(HIDE_CLASS);
+    searchOverlayDiv .classList.add(HIDE_CLASS);
 
     enableBodyScrolling();
   }
@@ -43,13 +47,13 @@ function ResultsModal() {
   // FUNCTIONS
 
   function preventBodyScrolling() {
-    body          .classList.add('prevent-body-scroll');
-    bodyWrapperDiv.classList.add('prevent-body-scroll');
+    body          .classList.add(LOCK_SCROLL_CLASS);
+    bodyWrapperDiv.classList.add(LOCK_SCROLL_CLASS);
   }
 
   function enableBodyScrolling() {
-    body          .classList.remove('prevent-body-scroll');
-    bodyWrapperDiv.classList.remove('prevent-body-scroll');
+    body          .classList.remove(LOCK_SCROLL_CLASS);
+    bodyWrapperDiv.classList.remove(LOCK_SCROLL_CLASS);
   }
 
   this.displayProviders = function(displayName, providers) {
@@ -58,7 +62,7 @@ function ResultsModal() {
     for (provider of providers) {
       const providerDataCard = getProviderDataCard(provider);
 
-      providerDataCard.classList.add('data-card');
+      providerDataCard.classList.add(PROVIDER_DATA_CLASS);
 
       tempDiv.appendChild(providerDataCard);
     }
