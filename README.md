@@ -1,5 +1,5 @@
 # Healthcare Provider Search
-<strong>Language: HTML/CSS/JS</strong>
+<strong>Language: HTML/CSS/JS+Node</strong>
 
 This project generates, processes, and stores 2,000 fictional healthcare providers, using data structures to make them very quickly searchable.
 
