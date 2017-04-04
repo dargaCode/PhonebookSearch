@@ -6,7 +6,6 @@ const SEARCH_FAIL_MESSAGE = 'No results found!';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
-
 const ES_PLURALIZER_WORD_ENDINGS = new Set([
   's',
   'x',
@@ -32,7 +31,7 @@ searchInput.addEventListener('input', function() {
 
 function handleQueryInput(queryString) {
   queryString = queryString.trim();
-  const validQuery = queryString != '';
+  const validQuery = queryString !== '';
 
   // don't display the entire trie on backspace to empty string or spaces only
   if (validQuery) {
@@ -75,7 +74,7 @@ function multiWordSearch(queryString) {
   const queryWords = queryString.split(' ');
   const searchResultSets = [];
 
-  for (queryWord of queryWords) {
+  for (const queryWord of queryWords) {
     const results = providerTrie.prefixSearch(queryWord);
     const resultSet = new Set(results);
 
@@ -89,10 +88,9 @@ function multiWordSearch(queryString) {
 
 function getCommonResults(searchResultSets) {
   const commonResults = [];
-
   const firstSet = searchResultSets.shift();
 
-  for (result of firstSet) {
+  for (const result of firstSet) {
     const commonResult = searchResultSets.every(function(set) {
       return set.has(result);
     });
@@ -107,7 +105,6 @@ function getCommonResults(searchResultSets) {
 
 function displayMessageInDom(message) {
   const tempDiv = document.createElement('div');
-
   const messageParagraph = createParagraph(message);
 
   tempDiv.appendChild(messageParagraph);
@@ -122,7 +119,6 @@ function bundleResults(resultNpis) {
 
   for (const providerNpi of resultNpis) {
     const provider = providerDict[providerNpi];
-
     const duplicate = idSet.has(providerNpi);
 
     // ignore duplicates
@@ -150,7 +146,7 @@ function bundleResults(resultNpis) {
 
         resultObj[providerDisplayName] = newProviderBundle;
       }
-    };
+    }
   }
 
   return resultObj;
@@ -175,7 +171,6 @@ function addResultsToDom(resultObj) {
 
   for (let displayName in resultObj) {
     const nameBundle = resultObj[displayName];
-
     const providerNameCard = createProviderNameCard(displayName, nameBundle);
 
     tempDiv.appendChild(providerNameCard);
@@ -236,7 +231,6 @@ function getPluralName(name) {
   const lastLetter = name.slice(-1);
   const lastTwoLetters = name.slice(-2);
   let pluralName;
-
   const esPluralizer = ES_PLURALIZER_WORD_ENDINGS.has(lastLetter) || ES_PLURALIZER_WORD_ENDINGS.has(lastTwoLetters);
 
   if (esPluralizer) {

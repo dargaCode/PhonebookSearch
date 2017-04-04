@@ -29,7 +29,7 @@ function processProviders(providers) {
     // Trie only surfaces a jsonString, not references to its actual nodes.
     trie: JSON.parse(providerTrie.getJsonString()),
     dict: providerDict,
-  }
+  };
 
   return processedObj;
 }
@@ -38,14 +38,13 @@ function storeProviderInTrie(provider, trie) {
   const providerKeywords = getProviderKeywords(provider);
   const providerNpi = provider.npi;
 
-  for (keyword of providerKeywords) {
+  for (const keyword of providerKeywords) {
     trie.store(keyword, providerNpi);
   }
 }
 
 function storeProviderInDict(provider, dict) {
   const providerNpi = provider.npi;
-
   const duplicateNpi = dict[providerNpi];
 
   if (!duplicateNpi) {
@@ -67,7 +66,7 @@ function getProviderKeywords(provider) {
   } else {
     const orgName = provider.organization_name;
 
-    keywords = orgName.split(' ')
+    keywords = orgName.split(' ');
   }
 
   return keywords;

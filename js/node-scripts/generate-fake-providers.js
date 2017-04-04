@@ -2,10 +2,8 @@
 // CONSTANTS
 
 const PROVIDER_OUTPUT_PATH = `${__dirname}/../../data/providers-input.json`;
-
 const MAX_ADDRESS_NUMBER = 5000;
 const PHONE_NUMBER_LENGTH = 10;
-
 const PROVIDER_COUNT = 1000;
 
 // DEPENDENCIES
@@ -19,7 +17,7 @@ const providerTypes = [
   'person',
   'org',
   'org',
-]
+];
 
 // most common male and female names in the US
 const firstNames = [
@@ -83,14 +81,14 @@ const firstNames = [
   // 'Cynthia',
   // 'Angela',
   // 'Melissa',
-]
+];
 
 const orgTypes = [
   'locale',
   'saint',
   'saint',
   'saint',
-]
+];
 
 const orgSuffixes = [
   'Hospital',
@@ -98,7 +96,7 @@ const orgSuffixes = [
   'Medical Center',
   'General Hospital',
   'Trauma Center',
-]
+];
 
 const lastNames = [
   'Smith',
@@ -131,7 +129,7 @@ const lastNames = [
   'Walker',
   'Perez',
   'Hall',
-]
+];
 
 const streetNames = [
   'Main',
@@ -192,25 +190,20 @@ function createProviders(num) {
 
   for (let i = 0; i < num; i ++) {
     const provider = {};
-
     const npi = 1000 + i;
-
     const phoneNumber = getPhoneNumber();
-
     // name
     const firstName = randomElement(firstNames);
     const lastName = randomElement(lastNames);
-
+    // organization
     const providerType = randomElement(providerTypes);
     const orgType = randomElement(orgTypes);
     const orgSuffix = randomElement(orgSuffixes);
-
     // address
     const addressNumber = getRandomNumberUpTo(MAX_ADDRESS_NUMBER);
     const streetName = randomElement(streetNames);
-    const streetType = randomElement(streetSuffixes)
+    const streetType = randomElement(streetSuffixes);
     const address = `${addressNumber} ${streetName} ${streetType}`;
-
     // locale
     const zipCode = randomElement(zipCodes);
     const cityName = zipCodesToCityNames[zipCode];
@@ -246,7 +239,6 @@ function createProviders(num) {
 
 function randomElement(array) {
   const index = getRandomNumberUpTo(array.length);
-
   const element = array[index];
 
   return element;

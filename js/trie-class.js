@@ -2,13 +2,13 @@
 // CLASSES
 
 function Trie() {
-  rootNode = {};
+  let rootNode = {};
 
   this.importNodesFromJsonString = function(jsonString) {
     const parsedObject = JSON.parse(jsonString);
 
     rootNode = parsedObject;
-  }
+  };
 
   // store a simple keyword or store a specified value by a keyword
   this.store = function(keyword, value = null) {
@@ -39,7 +39,7 @@ function Trie() {
     }
 
     node.values.push(value);
-  }
+  };
 
   this.containsKey = function(keyword) {
     let wordFound = true;
@@ -62,7 +62,7 @@ function Trie() {
     }
 
     return wordFound;
-  }
+  };
 
   this.prefixSearch = function(prefix) {
     let node = rootNode;
@@ -83,7 +83,7 @@ function Trie() {
     results = recursiveSearch(node, results);
 
     return results;
-  }
+  };
 
   function recursiveSearch(node, results) {
     for (let key in node) {
@@ -102,7 +102,7 @@ function Trie() {
     const json = JSON.stringify(rootNode);
 
     return json;
-  }
+  };
 }
 
 // Enable this class to be called by both browser scripts and nodejs require statements.

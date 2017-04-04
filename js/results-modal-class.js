@@ -6,7 +6,6 @@ function ResultsModal() {
   const HIDE_CLASS = 'hidden';
   const LOCK_SCROLL_CLASS = 'prevent-body-scroll';
   const PROVIDER_DATA_CLASS = 'data-card';
-
   const VISIBLE_DATA_KEYS = [
     'address',
     'city',
@@ -35,7 +34,7 @@ function ResultsModal() {
     searchOverlayDiv .classList.remove(HIDE_CLASS);
 
     preventBodyScrolling();
-  };
+  }
 
   function hideModal() {
     providerInfoModal.classList.add(HIDE_CLASS);
@@ -59,7 +58,7 @@ function ResultsModal() {
   this.displayProviders = function(displayName, providers) {
     const tempDiv = document.createElement('div');
 
-    for (provider of providers) {
+    for (const provider of providers) {
       const providerDataCard = getProviderDataCard(provider);
 
       providerDataCard.classList.add(PROVIDER_DATA_CLASS);
@@ -71,15 +70,13 @@ function ResultsModal() {
     providerNameH2.textContent = displayName;
 
     showModal();
-  }
+  };
 
   function getProviderDataCard(provider) {
     const div = document.createElement('div');
 
-    const visibleKeys = []
-
     // only some key/value pairs from the provider object are displayed
-    for (key of VISIBLE_DATA_KEYS) {
+    for (let key of VISIBLE_DATA_KEYS) {
       let value = provider[key];
 
       // a couple of values need special formatting
@@ -109,9 +106,7 @@ function ResultsModal() {
 
   function getDataParagraph(key, value) {
     const paragraph = document.createElement('p');
-
     const titleCasedKey = titleCaseWord(key);
-
     const htmlString = `<strong>${titleCasedKey}:</strong> ${value}`;
 
     paragraph.innerHTML = htmlString;
