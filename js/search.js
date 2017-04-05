@@ -21,32 +21,13 @@ const resultsHolderDiv = document.querySelector('#search-results-holder');
 
 // EVENT BINDINGS
 
-searchInput.addEventListener('input', function() {
-  const queryString = this.value;
+// use a callback as event handler so that main can pass data structures through it.
+function bindSearchEvent(callback) {
+  searchInput.addEventListener('input', function() {
+    const queryString = this.value;
 
-  handleQueryInput(queryString);
-});
-
-// EVENT HANDLERS
-
-function handleQueryInput(queryString) {
-  queryString = queryString.trim();
-  const validQuery = queryString !== '';
-
-  // don't display the entire trie on backspace to empty string or spaces only
-  if (validQuery) {
-    const searchResults = multiWordSearch(queryString);
-
-    if (searchResults.length === 0) {
-      displayMessageInDom(SEARCH_FAIL_MESSAGE);
-    } else {
-      const resultBundleObj = bundleResults(searchResults);
-
-      addResultsToDom(resultBundleObj);
-    }
-  } else {
-    clearResultsDiv();
-  }
+    callback(queryString);
+  });
 }
 
 // FUNCTIONS
@@ -70,7 +51,7 @@ function loadProviderJson(callback) {
 }
 
 // run a search for each word and only return the results common between all.
-function multiWordSearch(queryString) {
+function multiWordSearch(queryString, providerTrie) {
   const queryWords = queryString.split(' ');
   const searchResultSets = [];
 
@@ -113,7 +94,7 @@ function displayMessageInDom(message) {
 }
 
 // bundle the providers array into object keys by their common display names. Track how many unique providers and locations match each display name.
-function bundleResults(resultNpis) {
+function bundleResults(resultNpis, providerDict) {
   const npiSet = new Set();
   const resultObj = {};
 
@@ -166,7 +147,7 @@ function getDisplayName(provider) {
   return displayName;
 }
 
-function addResultsToDom(resultObj) {
+function addResultsToDom(resultObj, resultsModal) {
   const tempDiv = document.createElement('div');
 
   for (let displayName in resultObj) {
@@ -256,17 +237,38 @@ function clearResultsDiv() {
 
 // MAIN
 
-// must be a better way to make these available to events than making them global variables
-const providerTrie = new Trie();
-const resultsModal = new ResultsModal();
-let providerDict = {};
+(function main() {
+  const providerTrie = new Trie();
+  const resultsModal = new ResultsModal();
+  let providerDict = {};
 
-loadProviderJson(function(providerDataObj) {
-  // trie only imports nodes in string form, for safety
-  const trieJsonText = JSON.stringify(providerDataObj.trie);
+  loadProviderJson(function(providerDataObj) {
+    // trie only imports nodes in string form, for safety
+    const trieJsonText = JSON.stringify(providerDataObj.trie);
 
-  providerTrie.importNodesFromJsonString(trieJsonText);
-  providerDict = providerDataObj.dict;
+    providerTrie.importNodesFromJsonString(trieJsonText);
+    providerDict = providerDataObj.dict;
 
-  searchInput.focus();
-});
+    searchInput.focus();
+  });
+
+  bindSearchEvent(function(queryString) {
+    // don't let empty searches go through, since they would return all possible results
+    queryString = queryString.trim();
+    const validQuery = queryString !== '';
+
+    if (validQuery) {
+      const searchResults = multiWordSearch(queryString, providerTrie);
+
+      if (searchResults.length === 0) {
+        displayMessageInDom(SEARCH_FAIL_MESSAGE);
+      } else {
+        const resultBundleObj = bundleResults(searchResults, providerDict);
+
+        addResultsToDom(resultBundleObj, resultsModal);
+      }
+    } else {
+      clearResultsDiv();
+    }
+  });
+}());
