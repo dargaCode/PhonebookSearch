@@ -6,12 +6,8 @@ const MAX_ADDRESS_NUMBER = 5000;
 const PHONE_NUMBER_LENGTH = 10;
 const PROVIDER_COUNT = 2000;
 
-// DEPENDENCIES
-
-const fs = require('fs');
-
 // duplicate values adjust probabilities
-const providerTypes = [
+const PROVIDER_TYPES = [
   'person',
   'person',
   'person',
@@ -21,8 +17,7 @@ const providerTypes = [
   'org',
 ];
 
-// most common male and female names in the US
-const firstNames = [
+const FIRST_NAMES = [
   // male
   'Ahmed',
   'Adam',
@@ -88,7 +83,7 @@ const firstNames = [
   'Zara',
 ];
 
-const lastNames = [
+const LAST_NAMES = [
   'Anderson',
   'Bashir',
   'Carter',
@@ -117,7 +112,7 @@ const lastNames = [
   'Zhukov',
 ];
 
-const orgTypes = [
+const ORG_TYPES = [
   'locale',
   'saint',
   'saint',
@@ -127,7 +122,7 @@ const orgTypes = [
   'saint',
 ];
 
-const orgSuffixes = [
+const ORG_SUFFIXES = [
   'Hospital',
   'Pediatric Hospital',
   'Medical Center',
@@ -135,7 +130,7 @@ const orgSuffixes = [
   'Trauma Center',
 ];
 
-const streetNames = [
+const STREET_NAMES = [
   'Main',
   'Oak',
   'Elm',
@@ -154,7 +149,7 @@ const streetNames = [
   'Ninth',
 ];
 
-const streetSuffixes = [
+const STREET_SUFFIXES = [
   'Street',
   'Street',
   'Street',
@@ -165,7 +160,7 @@ const streetSuffixes = [
   'Lane',
 ];
 
-const zipCodes = [
+const ZIP_CODES = [
   '11111',
   '22222',
   '33333',
@@ -177,7 +172,7 @@ const zipCodes = [
   '99999',
 ];
 
-const zipCodesToCityNames = {
+const ZIP_CODES_TO_CITY_NAMES = {
   11111: 'Oceanside',
   22222: 'Franklin',
   33333: 'Greenville',
@@ -189,6 +184,12 @@ const zipCodesToCityNames = {
   99999: 'Georgetown',
 };
 
+// DEPENDENCIES
+
+const fs = require('fs');
+
+// FUNCTIONS
+
 function createProviders(num) {
   const providers = [];
 
@@ -197,20 +198,20 @@ function createProviders(num) {
     const npi = 1000 + i;
     const phoneNumber = getPhoneNumber();
     // name
-    const firstName = randomElement(firstNames);
-    const lastName = randomElement(lastNames);
+    const firstName = randomElement(FIRST_NAMES);
+    const lastName = randomElement(LAST_NAMES);
     // organization
-    const providerType = randomElement(providerTypes);
-    const orgType = randomElement(orgTypes);
-    const orgSuffix = randomElement(orgSuffixes);
+    const providerType = randomElement(PROVIDER_TYPES);
+    const orgType = randomElement(ORG_TYPES);
+    const orgSuffix = randomElement(ORG_SUFFIXES);
     // address
     const addressNumber = getRandomNumberUpTo(MAX_ADDRESS_NUMBER);
-    const streetName = randomElement(streetNames);
-    const streetType = randomElement(streetSuffixes);
+    const streetName = randomElement(STREET_NAMES);
+    const streetType = randomElement(STREET_SUFFIXES);
     const address = `${addressNumber} ${streetName} ${streetType}`;
     // locale
-    const zipCode = randomElement(zipCodes);
-    const cityName = zipCodesToCityNames[zipCode];
+    const zipCode = randomElement(ZIP_CODES);
+    const cityName = ZIP_CODES_TO_CITY_NAMES[zipCode];
 
     // mutually exclusive elements
     if (providerType === 'person') {
@@ -281,6 +282,8 @@ function getPhoneNumber() {
 
 // MAIN
 
-const providers = createProviders(PROVIDER_COUNT);
+(function main() {
+  const providers = createProviders(PROVIDER_COUNT);
 
-saveJson(providers);
+  saveJson(providers);
+}());
