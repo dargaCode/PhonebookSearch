@@ -3,9 +3,9 @@
 
 This project generates, processes, and stores 2,000 fictional healthcare providers, using data structures to make them very quickly searchable.
 
-I think this is the most challenging and interesting project I’ve done so far. It required me to incorporate data structures, big O, OOP, JavaScript events, DOM manipulation, and even some new HTML and CSS tricks. 
+I think this is the most challenging and interesting project I’ve done so far. It required me to incorporate data structures, Big O, OOP, AJAX, JSON, asynchronous callbacks, events, recursion, DOM manipulation, and even some new HTML/CSS tricks. 
 
-In the real world this app would require a lot of server-side/database work as well, but for my purposes here I simulated that with some node scripts and saved json files. 
+In the real world this app would require a lot of server-side/database work as well, but for my purposes here I simulated that with some Node.js scripts and saved JSON files. 
 
 <a href="http://dargacode.com/HealthcareSearch/"><b>Live Webpage</b></a>
 
