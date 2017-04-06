@@ -22,17 +22,17 @@ const resultsHolderDiv = document.querySelector('#search-results-holder');
 // EVENT BINDINGS
 
 // use a callback as event handler so that main can pass data structures through it.
-function bindSearchEvent(callback) {
+function bindSearchEvent(eventHandlerCallback) {
   searchInput.addEventListener('input', function() {
     const queryString = this.value;
 
-    callback(queryString);
+    eventHandlerCallback(queryString);
   });
 }
 
 // FUNCTIONS
 
-function loadProviderJson(callback) {
+function loadProviderJson(processDataCallback) {
   const request = new XMLHttpRequest();
 
   request.open('GET', PROVIDER_JSON_PATH, true);
@@ -43,7 +43,7 @@ function loadProviderJson(callback) {
       console.log('Imported provider data from JSON:');
       console.log(providerDataObj);
 
-      callback(providerDataObj);
+      processDataCallback(providerDataObj);
     }
   };
 
@@ -258,6 +258,29 @@ function clearResultsDiv() {
   const resultsModal = new ResultsModal();
   let providerDict = {};
 
+  // use callback function so data structures can be passed to helper functions
+  bindSearchEvent(function(queryString) {
+    const uniqueQueryWords = getUniqueQueryWords(queryString);
+    const anyQueryWords = uniqueQueryWords.length > 0;
+
+    if (anyQueryWords) {
+      const searchResults = multiWordSearch(uniqueQueryWords, providerTrie);
+      const anySearchResults = searchResults.length > 0;
+
+      if (anySearchResults) {
+        const resultBundleObj = bundleResults(searchResults, providerDict);
+
+        addResultsToDom(resultBundleObj, resultsModal);
+      // no search results
+      } else {
+        displayMessageInDom(SEARCH_FAIL_MESSAGE);
+      }
+    // no query words
+    } else {
+      clearResultsDiv();
+    }
+  });
+
   loadProviderJson(function(providerDataObj) {
     // trie only imports nodes in string form, for safety
     const trieJsonText = JSON.stringify(providerDataObj.trie);
@@ -266,23 +289,5 @@ function clearResultsDiv() {
     providerDict = providerDataObj.dict;
 
     searchInput.focus();
-  });
-
-  bindSearchEvent(function(queryString) {
-    const uniqueQueryWords = getUniqueQueryWords(queryString);
-
-    if (uniqueQueryWords.length > 0) {
-      const searchResults = multiWordSearch(uniqueQueryWords, providerTrie);
-
-      if (searchResults.length === 0) {
-        displayMessageInDom(SEARCH_FAIL_MESSAGE);
-      } else {
-        const resultBundleObj = bundleResults(searchResults, providerDict);
-
-        addResultsToDom(resultBundleObj, resultsModal);
-      }
-    } else {
-      clearResultsDiv();
-    }
   });
 }());
