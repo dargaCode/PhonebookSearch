@@ -268,6 +268,16 @@ function clearResultsDiv() {
   const resultsModal = new ResultsModal();
   let providerDict = {};
 
+  loadProviderJson(function(providerDataObj) {
+    // trie only imports nodes in string form, for safety
+    const trieJsonText = JSON.stringify(providerDataObj.trie);
+
+    providerTrie.importNodesFromJsonString(trieJsonText);
+    providerDict = providerDataObj.dict;
+
+    enableSearchBox();
+  });
+
   // use callback function so data structures can be passed to helper functions
   bindSearchEvent(function(queryString) {
     const uniqueQueryWords = getUniqueQueryWords(queryString);
@@ -289,15 +299,5 @@ function clearResultsDiv() {
     } else {
       clearResultsDiv();
     }
-  });
-
-  loadProviderJson(function(providerDataObj) {
-    // trie only imports nodes in string form, for safety
-    const trieJsonText = JSON.stringify(providerDataObj.trie);
-
-    providerTrie.importNodesFromJsonString(trieJsonText);
-    providerDict = providerDataObj.dict;
-
-    enableSearchBox();
   });
 }());
