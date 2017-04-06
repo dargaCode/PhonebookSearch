@@ -43,6 +43,10 @@ input:focus {
   outline: none;
 }
 
+input.disabled {
+  text-align: center;
+}
+
 .container {
   max-width: 500px;
   margin: 0 auto 120px;

@@ -3,6 +3,7 @@
 
 const PROVIDER_JSON_PATH = './data/providers-processed.json';
 const SEARCH_FAIL_MESSAGE = 'No results found!';
+const DISABLED_CLASS = 'disabled';
 const NAME_CARD_DIV_CLASS = 'name-card';
 const DISPLAY_NAME_PARAGRAPH_CLASS = 'display-name';
 const SUMMARY_PARAGRAPH_CLASS = 'summary';
@@ -48,6 +49,15 @@ function loadProviderJson(processDataCallback) {
   };
 
   request.send();
+}
+
+// called once the JSON has finished loading
+function enableSearchBox() {
+  searchInput.disabled = false;
+  searchInput.classList.remove(DISABLED_CLASS);
+  // was 'loading' before
+  searchInput.placeholder = '';
+  searchInput.focus();
 }
 
 // duplicate words and especially empty query words (which get every single result in the Trie) slow down performance drastically, so make sure each query word is unique and non-empty.
@@ -288,6 +298,6 @@ function clearResultsDiv() {
     providerTrie.importNodesFromJsonString(trieJsonText);
     providerDict = providerDataObj.dict;
 
-    searchInput.focus();
+    enableSearchBox();
   });
 }());
