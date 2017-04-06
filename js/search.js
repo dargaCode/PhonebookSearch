@@ -50,9 +50,25 @@ function loadProviderJson(callback) {
   request.send();
 }
 
+// duplicate words and especially empty query words (which get every single result in the Trie) slow down performance drastically, so make sure each query word is unique and non-empty.
+function getUniqueQueryWords(queryString) {
+  let results = [];
+  const trimmedQuery = queryString.trim();
+  const nonEmptyQuery = Boolean(trimmedQuery);
+
+  if (nonEmptyQuery) {
+    // strip out consecutive spaces, to make sure there are no empty query words,
+    const queryWords = trimmedQuery.split(/\s+/);
+    const uniqueWords = new Set(queryWords);
+
+    results = Array.from(uniqueWords);
+  }
+
+  return results;
+}
+
 // run a search for each word and only return the results common between all.
-function multiWordSearch(queryString, providerTrie) {
-  const queryWords = queryString.split(' ');
+function multiWordSearch(queryWords, providerTrie) {
   const searchResultSets = [];
 
   for (const queryWord of queryWords) {
@@ -253,12 +269,10 @@ function clearResultsDiv() {
   });
 
   bindSearchEvent(function(queryString) {
-    // don't let empty searches go through, since they would return all possible results
-    queryString = queryString.trim();
-    const validQuery = queryString !== '';
+    const uniqueQueryWords = getUniqueQueryWords(queryString);
 
-    if (validQuery) {
-      const searchResults = multiWordSearch(queryString, providerTrie);
+    if (uniqueQueryWords.length > 0) {
+      const searchResults = multiWordSearch(uniqueQueryWords, providerTrie);
 
       if (searchResults.length === 0) {
         displayMessageInDom(SEARCH_FAIL_MESSAGE);
