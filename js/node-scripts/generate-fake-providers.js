@@ -1,13 +1,13 @@
 
 // CONSTANTS
 
-const PROVIDER_OUTPUT_PATH = `${__dirname}/../../data/phonebook-raw.json`;
+const JSON_OUTPUT_PATH = `${__dirname}/../../data/phonebook-raw.json`;
 const MAX_ADDRESS_NUMBER = 5000;
 const PHONE_NUMBER_LENGTH = 10;
-const PROVIDER_COUNT = 2000;
+const ENTRY_COUNT = 2000;
 
 // duplicate values adjust probabilities
-const PROVIDER_TYPES = [
+const ENTRY_TYPES = [
   'person',
   'person',
   'person',
@@ -190,18 +190,18 @@ const fs = require('fs');
 
 // FUNCTIONS
 
-function createProviders(num) {
-  const providers = [];
+function generatePhoneBookEntries(num) {
+  const phonebookEntries = [];
 
   for (let i = 0; i < num; i ++) {
-    const provider = {};
+    const entry = {};
     const id = 1000 + i;
     const phoneNumber = getPhoneNumber();
     // name
     const firstName = randomElement(FIRST_NAMES);
     const lastName = randomElement(LAST_NAMES);
     // organization
-    const providerType = randomElement(PROVIDER_TYPES);
+    const entryType = randomElement(ENTRY_TYPES);
     const orgType = randomElement(ORG_TYPES);
     const orgSuffix = randomElement(ORG_SUFFIXES);
     // address
@@ -214,9 +214,9 @@ function createProviders(num) {
     const cityName = ZIP_CODES_TO_CITY_NAMES[zipCode];
 
     // mutually exclusive elements
-    if (providerType === 'person') {
-      provider.first_name = firstName;
-      provider.last_name = lastName;
+    if (entryType === 'person') {
+      entry.first_name = firstName;
+      entry.last_name = lastName;
     } else {
       let orgName;
 
@@ -226,20 +226,20 @@ function createProviders(num) {
         orgName = `${cityName} ${orgSuffix}`;
       }
 
-      provider.organization_name = orgName;
+      entry.organization_name = orgName;
     }
 
     // build it
-    provider.address = address;
-    provider.city = cityName;
-    provider.zip = zipCode;
-    provider.phone = phoneNumber;
-    provider.id = id;
+    entry.address = address;
+    entry.city = cityName;
+    entry.zip = zipCode;
+    entry.phone = phoneNumber;
+    entry.id = id;
 
-    providers.push(provider);
+    phonebookEntries.push(entry);
   }
 
-  return providers;
+  return phonebookEntries;
 }
 
 function randomElement(array) {
@@ -255,14 +255,14 @@ function getRandomNumberUpTo(max) {
   return random;
 }
 
-function saveJson(providers) {
-  const jsonString = JSON.stringify(providers);
+function saveJson(phonebookEntries) {
+  const jsonString = JSON.stringify(phonebookEntries);
 
-  fs.writeFile(PROVIDER_OUTPUT_PATH, jsonString, function (err) {
+  fs.writeFile(JSON_OUTPUT_PATH, jsonString, function (err) {
     if (err) {
       console.log(err);
     } else {
-      console.log('Saved provider json:\n');
+      console.log('Saved raw phonebook JSON:\n');
       console.log(jsonString);
     }
   });
@@ -283,7 +283,7 @@ function getPhoneNumber() {
 // MAIN
 
 (function main() {
-  const providers = createProviders(PROVIDER_COUNT);
+  const phonebookEntries = generatePhoneBookEntries(ENTRY_COUNT);
 
-  saveJson(providers);
+  saveJson(phonebookEntries);
 }());
