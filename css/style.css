@@ -100,7 +100,7 @@ header {
   margin: 0 auto;
 }
 
-.modal-wrapper .provider-info-modal {
+.modal-wrapper .result-info-modal {
   position: fixed;
   z-index: 1;
   top: 140px;
@@ -112,7 +112,7 @@ header {
   box-shadow: 0 0 40px #444;
 }
 
-.provider-info-modal .close-button {
+.result-info-modal .close-button {
   position: absolute;
   top: 12px;
   right: 13px;
@@ -120,19 +120,19 @@ header {
   padding: 0 5px 4px;
 }
 
-.provider-info-modal .close-button:hover {
+.result-info-modal .close-button:hover {
   font-weight: bold;
   cursor: pointer;
 }
 
-.provider-info-modal .provider-data-holder {
+.result-info-modal .result-data-holder {
   max-height: 440px;
   overflow: auto;
   margin: 0;
   padding: 0 20px;
 }
 
-.provider-data-holder .data-card {
+.result-data-holder .data-card {
   margin: 10px 0;
   padding: 7px 12px;
   box-shadow: 0 0 1px #aaa;

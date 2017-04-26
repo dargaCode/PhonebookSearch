@@ -14,9 +14,9 @@ function ResultsModal() {
 
   // DOM HOOKS
 
-  const providerInfoModal = document.querySelector('#provider-info-modal');
-  const providerNameH2    = document.querySelector('#provider-name-h2');
-  const dataHolderDiv     = document.querySelector('#provider-data-holder');
+  const providerInfoModal = document.querySelector('#result-info-modal');
+  const providerNameH2    = document.querySelector('#result-name-h2');
+  const dataHolderDiv     = document.querySelector('#result-data-holder');
   const searchOverlayDiv  = document.querySelector('#search-overlay-div');
   const body              = document.querySelector('body');
   const bodyWrapperDiv    = document.querySelector('#body-wrapper-div');

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Healthcare Provider Search</title>
+  <title>Phonebook Search</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
   <div id="body-wrapper-div" class="body-wrapper">
     <header>
-      <h1>Healthcare Provider Search</h1>
+      <h1>Phonebook Search</h1>
     </header>
 
     <div class="modal-wrapper">
-      <div id="provider-info-modal" class="container provider-info-modal hidden">
-        <h3 id="provider-name-h2" class="provider-name">Provider Name</h3>
+      <div id="result-info-modal" class="container result-info-modal hidden">
+        <h3 id="result-name-h2" class="result-name">Provider Name</h3>
 
         <span id="close-modal-button" class="close-button">&times;</span>
 
-        <div id="provider-data-holder" class="provider-data-holder">
-          <!-- provider data go here -->
+        <div id="result-data-holder" class="result-data-holder">
+          <!-- result data go here -->
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="container search">
-      <h2>Search for a physician or organization</h2>
+      <h2>Search for a person or business</h2>
 
       <input type="text" name="search-input" id="search-input" class="search-input disabled" placeholder="Loading..." spellcheck="false" disabled>
 

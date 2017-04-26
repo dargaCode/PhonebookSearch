@@ -41,7 +41,7 @@ function loadProviderJson(processDataCallback) {
     if (request.readyState == 4 && request.status == '200') {
       const providerDataObj = JSON.parse(request.responseText);
 
-      console.log('Imported provider data from JSON:');
+      console.log('Imported phonebook data from JSON:');
       console.log(providerDataObj);
 
       processDataCallback(providerDataObj);
