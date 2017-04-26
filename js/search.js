@@ -1,7 +1,7 @@
 
 // CONSTANTS
 
-const PROVIDER_JSON_PATH = './data/phonebook-processed.json';
+const PHONEBOOK_JSON_PATH = './data/phonebook-processed.json';
 const SEARCH_FAIL_MESSAGE = 'No results found!';
 const DISABLED_CLASS = 'disabled';
 const NAME_CARD_DIV_CLASS = 'name-card';
@@ -33,18 +33,18 @@ function bindSearchEvent(eventHandlerCallback) {
 
 // FUNCTIONS
 
-function loadProviderJson(processDataCallback) {
+function loadPhonebookJson(processDataCallback) {
   const request = new XMLHttpRequest();
 
-  request.open('GET', PROVIDER_JSON_PATH, true);
+  request.open('GET', PHONEBOOK_JSON_PATH, true);
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == '200') {
-      const providerDataObj = JSON.parse(request.responseText);
+      const phonebookDataObj = JSON.parse(request.responseText);
 
       console.log('Imported phonebook data from JSON:');
-      console.log(providerDataObj);
+      console.log(phonebookDataObj);
 
-      processDataCallback(providerDataObj);
+      processDataCallback(phonebookDataObj);
     }
   };
 
@@ -78,11 +78,11 @@ function getUniqueQueryWords(queryString) {
 }
 
 // run a search for each word and only return the results common between all.
-function multiWordSearch(queryWords, providerTrie) {
+function multiWordSearch(queryWords, phonebookTrie) {
   const searchResultSets = [];
 
   for (const queryWord of queryWords) {
-    const results = providerTrie.prefixSearch(queryWord);
+    const results = phonebookTrie.prefixSearch(queryWord);
     const resultSet = new Set(results);
 
     searchResultSets.push(resultSet);
@@ -119,39 +119,39 @@ function displayMessageInDom(message) {
   resultsHolderDiv.innerHTML = tempDiv.innerHTML;
 }
 
-// bundle the providers array into object keys by their common display names. Track how many unique providers and locations match each display name.
-function bundleResults(resultIds, providerDict) {
+// bundle the resultss array into object keys by their common display names. Track how many unique results and locations match each display name.
+function bundleResults(resultIds, phonebookDict) {
   const idSet = new Set();
   const resultObj = {};
 
-  for (const providerId of resultIds) {
-    const provider = providerDict[providerId];
-    const duplicate = idSet.has(providerId);
+  for (const resultId of resultIds) {
+    const result = phonebookDict[resultId];
+    const duplicate = idSet.has(resultId);
 
     // ignore duplicates
     if (!duplicate) {
-      idSet.add(providerId);
+      idSet.add(resultId);
 
-      const providerDisplayName = getDisplayName(provider);
-      const providerZip = provider.zip;
+      const resultDisplayName = getDisplayName(result);
+      const resultZip = result.zip;
 
       // matching display name already tracked; add onto it
-      if (resultObj[providerDisplayName]) {
-        const existingProviderBundle = resultObj[providerDisplayName];
+      if (resultObj[resultDisplayName]) {
+        const existingResultBundle = resultObj[resultDisplayName];
 
-        existingProviderBundle.locationSet.add(providerZip);
-        existingProviderBundle.providers.push(provider);
+        existingResultBundle.locationSet.add(resultZip);
+        existingResultBundle.results.push(result);
       // begin tracking display name
       } else {
-        const newProviderBundle = {
+        const newResultBundle = {
             locationSet: new Set(),
-            providers: [],
+            results: [],
         };
 
-        newProviderBundle.locationSet.add(providerZip);
-        newProviderBundle.providers.push(provider);
+        newResultBundle.locationSet.add(resultZip);
+        newResultBundle.results.push(result);
 
-        resultObj[providerDisplayName] = newProviderBundle;
+        resultObj[resultDisplayName] = newResultBundle;
       }
     }
   }
@@ -159,15 +159,15 @@ function bundleResults(resultIds, providerDict) {
   return resultObj;
 }
 
-function getDisplayName(provider) {
+function getDisplayName(result) {
   let displayName;
 
   // person
-  if (provider.first_name) {
-    displayName = `${provider.first_name} ${provider.last_name}`;
+  if (result.first_name) {
+    displayName = `${result.first_name} ${result.last_name}`;
   // organization
   } else {
-    displayName = provider.organization_name;
+    displayName = result.organization_name;
   }
 
   return displayName;
@@ -178,12 +178,12 @@ function addResultsToDom(resultObj, resultsModal) {
 
   for (let displayName in resultObj) {
     const nameBundle = resultObj[displayName];
-    const providerNameCard = createProviderNameCard(displayName, nameBundle);
+    const resultNameCard = createResultNameCard(displayName, nameBundle);
 
-    tempDiv.appendChild(providerNameCard);
+    tempDiv.appendChild(resultNameCard);
 
-    providerNameCard.addEventListener('click', function() {
-      resultsModal.displayProviders(displayName, nameBundle.providers);
+    resultNameCard.addEventListener('click', function() {
+      resultsModal.displayResults(displayName, nameBundle.results);
     });
   }
 
@@ -192,7 +192,7 @@ function addResultsToDom(resultObj, resultsModal) {
   resultsHolderDiv.appendChild(tempDiv);
 }
 
-function createProviderNameCard(displayName, nameBundle) {
+function createResultNameCard(displayName, nameBundle) {
   const nameCardDiv = document.createElement('div');
   const nameParagraph = createDisplayNameParagraph(displayName);
   const summaryParagraph = createSummaryParagraph(displayName, nameBundle);
@@ -213,7 +213,7 @@ function createDisplayNameParagraph(displayName) {
 }
 
 function createSummaryParagraph(displayName, nameBundle) {
-  const nameCount = nameBundle.providers.length;
+  const nameCount = nameBundle.results.length;
 
   let summaryText;
 
@@ -264,16 +264,16 @@ function clearResultsDiv() {
 // MAIN
 
 (function main() {
-  const providerTrie = new Trie();
+  const phonebookTrie = new Trie();
   const resultsModal = new ResultsModal();
-  let providerDict = {};
+  let phonebookDict = {};
 
-  loadProviderJson(function(providerDataObj) {
+  loadPhonebookJson(function(phonebookDataObj) {
     // trie only imports nodes in string form, for safety
-    const trieJsonText = JSON.stringify(providerDataObj.trie);
+    const trieJsonText = JSON.stringify(phonebookDataObj.trie);
 
-    providerTrie.importNodesFromJsonString(trieJsonText);
-    providerDict = providerDataObj.dict;
+    phonebookTrie.importNodesFromJsonString(trieJsonText);
+    phonebookDict = phonebookDataObj.dict;
 
     enableSearchBox();
   });
@@ -284,11 +284,11 @@ function clearResultsDiv() {
     const anyQueryWords = uniqueQueryWords.length > 0;
 
     if (anyQueryWords) {
-      const searchResults = multiWordSearch(uniqueQueryWords, providerTrie);
+      const searchResults = multiWordSearch(uniqueQueryWords, phonebookTrie);
       const anySearchResults = searchResults.length > 0;
 
       if (anySearchResults) {
-        const resultBundleObj = bundleResults(searchResults, providerDict);
+        const resultBundleObj = bundleResults(searchResults, phonebookDict);
 
         addResultsToDom(resultBundleObj, resultsModal);
       // no search results

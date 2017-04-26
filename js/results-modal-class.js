@@ -5,7 +5,7 @@ function ResultsModal() {
 
   const HIDE_CLASS = 'hidden';
   const LOCK_SCROLL_CLASS = 'prevent-body-scroll';
-  const PROVIDER_DATA_CLASS = 'data-card';
+  const RESULT_CARD_CLASS = 'result-data-card';
   const VISIBLE_DATA_KEYS = [
     'address',
     'city',
@@ -14,8 +14,8 @@ function ResultsModal() {
 
   // DOM HOOKS
 
-  const providerInfoModal = document.querySelector('#result-info-modal');
-  const providerNameH2    = document.querySelector('#result-name-h2');
+  const resultInfoModal = document.querySelector('#result-info-modal');
+  const resultNameH2    = document.querySelector('#result-name-h2');
   const dataHolderDiv     = document.querySelector('#result-data-holder');
   const searchOverlayDiv  = document.querySelector('#search-overlay-div');
   const body              = document.querySelector('body');
@@ -30,14 +30,14 @@ function ResultsModal() {
   // EVENT HANDLERS
 
   function showModal() {
-    providerInfoModal.classList.remove(HIDE_CLASS);
+    resultInfoModal.classList.remove(HIDE_CLASS);
     searchOverlayDiv .classList.remove(HIDE_CLASS);
 
     preventBodyScrolling();
   }
 
   function hideModal() {
-    providerInfoModal.classList.add(HIDE_CLASS);
+    resultInfoModal.classList.add(HIDE_CLASS);
     searchOverlayDiv .classList.add(HIDE_CLASS);
 
     enableBodyScrolling();
@@ -55,35 +55,35 @@ function ResultsModal() {
     bodyWrapperDiv.classList.remove(LOCK_SCROLL_CLASS);
   }
 
-  this.displayProviders = function(displayName, providers) {
+  this.displayResults = function(displayName, results) {
     const tempDiv = document.createElement('div');
 
-    for (const provider of providers) {
-      const providerDataCard = getProviderDataCard(provider);
+    for (const result of results) {
+      const resultDataCard = getResultDataCard(result);
 
-      providerDataCard.classList.add(PROVIDER_DATA_CLASS);
+      resultDataCard.classList.add(RESULT_CARD_CLASS);
 
-      tempDiv.appendChild(providerDataCard);
+      tempDiv.appendChild(resultDataCard);
     }
 
     dataHolderDiv.innerHTML = tempDiv.innerHTML;
-    providerNameH2.textContent = displayName;
+    resultNameH2.textContent = displayName;
 
     showModal();
   };
 
-  function getProviderDataCard(provider) {
+  function getResultDataCard(result) {
     const div = document.createElement('div');
 
-    // only some key/value pairs from the provider object are displayed
+    // only some key/value pairs from the result object are displayed
     for (let key of VISIBLE_DATA_KEYS) {
-      let value = provider[key];
+      let value = result[key];
 
       // a couple of values need special formatting
       if (key === 'city') {
-        value = `${provider.city} (${provider.zip})`;
+        value = `${result.city} (${result.zip})`;
       } else if (key === 'phone') {
-        value = formatPhoneNumber(provider.phone);
+        value = formatPhoneNumber(result.phone);
       }
 
       const dataParagraph = getDataParagraph(key, value);

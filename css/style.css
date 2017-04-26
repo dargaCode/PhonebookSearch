@@ -92,7 +92,7 @@ header {
   margin: 5px;
 }
 
-/*PROVIDER INFO MODAL*/
+/*RESULT INFO MODAL*/
 
 /*Enables the modal to stay centered and the proper width*/
 .modal-wrapper {
@@ -132,14 +132,14 @@ header {
   padding: 0 20px;
 }
 
-.result-data-holder .data-card {
+.result-data-holder .result-data-card {
   margin: 10px 0;
   padding: 7px 12px;
   box-shadow: 0 0 1px #aaa;
   border-radius: 2px;
 }
 
-.data-card p {
+.result-data-card p {
   margin: 5px;
 }
 
