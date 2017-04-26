@@ -1,7 +1,7 @@
 
 // CONSTANTS
 
-const PROVIDER_OUTPUT_PATH = `${__dirname}/../../data/providers-input.json`;
+const PROVIDER_OUTPUT_PATH = `${__dirname}/../../data/phonebook-raw.json`;
 const MAX_ADDRESS_NUMBER = 5000;
 const PHONE_NUMBER_LENGTH = 10;
 const PROVIDER_COUNT = 2000;

@@ -1,7 +1,7 @@
 
 // CONSTANTS
 
-const PROVIDER_JSON_PATH = './data/providers-processed.json';
+const PROVIDER_JSON_PATH = './data/phonebook-processed.json';
 const SEARCH_FAIL_MESSAGE = 'No results found!';
 const DISABLED_CLASS = 'disabled';
 const NAME_CARD_DIV_CLASS = 'name-card';
