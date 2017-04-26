@@ -18,9 +18,9 @@ function processProviders(providers) {
   const providerDict = {};
 
   for (const provider of providers) {
-    // store the provider's npi id in a tree by its display name for fast lookup.
+    // store the provider's id in a tree by its display name for fast lookup.
     storeProviderInTrie(provider, providerTrie);
-    // store the provider's other data in a dict by its npi id, to help keep the tree as small as possible.
+    // store the provider's other data in a dict by its id, to help keep the tree as small as possible.
     storeProviderInDict(provider, providerDict);
   }
 
@@ -36,19 +36,19 @@ function processProviders(providers) {
 
 function storeProviderInTrie(provider, trie) {
   const providerKeywords = getProviderKeywords(provider);
-  const providerNpi = provider.npi;
+  const providerId = provider.id;
 
   for (const keyword of providerKeywords) {
-    trie.store(keyword, providerNpi);
+    trie.store(keyword, providerId);
   }
 }
 
 function storeProviderInDict(provider, dict) {
-  const providerNpi = provider.npi;
-  const duplicateNpi = dict[providerNpi];
+  const providerId = provider.id;
+  const duplicateId = dict[providerId];
 
-  if (!duplicateNpi) {
-    dict[providerNpi] = provider;
+  if (!duplicateId) {
+    dict[providerId] = provider;
   }
 }
 

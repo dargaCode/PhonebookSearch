@@ -195,7 +195,7 @@ function createProviders(num) {
 
   for (let i = 0; i < num; i ++) {
     const provider = {};
-    const npi = 1000 + i;
+    const id = 1000 + i;
     const phoneNumber = getPhoneNumber();
     // name
     const firstName = randomElement(FIRST_NAMES);
@@ -234,7 +234,7 @@ function createProviders(num) {
     provider.city = cityName;
     provider.zip = zipCode;
     provider.phone = phoneNumber;
-    provider.npi = npi;
+    provider.id = id;
 
     providers.push(provider);
   }

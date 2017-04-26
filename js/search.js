@@ -120,17 +120,17 @@ function displayMessageInDom(message) {
 }
 
 // bundle the providers array into object keys by their common display names. Track how many unique providers and locations match each display name.
-function bundleResults(resultNpis, providerDict) {
-  const npiSet = new Set();
+function bundleResults(resultIds, providerDict) {
+  const idSet = new Set();
   const resultObj = {};
 
-  for (const providerNpi of resultNpis) {
-    const provider = providerDict[providerNpi];
-    const duplicate = npiSet.has(providerNpi);
+  for (const providerId of resultIds) {
+    const provider = providerDict[providerId];
+    const duplicate = idSet.has(providerId);
 
     // ignore duplicates
     if (!duplicate) {
-      npiSet.add(providerNpi);
+      idSet.add(providerId);
 
       const providerDisplayName = getDisplayName(provider);
       const providerZip = provider.zip;
