@@ -124,6 +124,22 @@ const LAST_NAMES = [
   'Zhukov',
 ];
 
+const BUSINESS_PREFIX_TYPES = [
+  'firstName',
+  'firstName',
+  'firstName',
+  'firstName',
+  'lastName',
+  'lastName',
+  'lastName',
+  'lastName',
+  'streetName',
+  'streetName',
+  'streetName',
+  'streetName',
+  'cityName',
+];
+
 const BUSINESS_SUFFIXES = [
   'Restaurant',
   'Cafe',
@@ -139,22 +155,6 @@ const BUSINESS_SUFFIXES = [
   'Dance Studio',
   'Gallery',
   'Day Care',
-];
-
-const BUSINESS_PREFIX_TYPES = [
-  'firstName',
-  'firstName',
-  'firstName',
-  'firstName',
-  'lastName',
-  'lastName',
-  'lastName',
-  'lastName',
-  'streetName',
-  'streetName',
-  'streetName',
-  'streetName',
-  'cityName',
 ];
 
 const ORGANIZATION_SUFFIXES = [
@@ -256,62 +256,26 @@ const fs = require('fs');
 
 // FUNCTIONS
 
-function generatePhoneBookEntries(num) {
+function generatePhoneBookEntries(entryCount) {
   const phonebookEntries = [];
 
-  for (let i = 0; i < num; i ++) {
+  for (let i = 0; i < entryCount; i ++) {
     // id
     const id = MINIMUM_ID + i;
-    // type
-    const entryType = randomElement(ENTRY_TYPES);
-    // person
-    const firstName = randomElement(FIRST_NAMES);
-    const lastName = randomElement(LAST_NAMES);
-    // business
-    const businessPrefixType = randomElement(BUSINESS_PREFIX_TYPES);
-    const businessSuffix = randomElement(BUSINESS_SUFFIXES);
-    // organization
-    const organizationSuffix = randomElement(ORGANIZATION_SUFFIXES);
     // address
     const addressNumber = getRandomNumberUpTo(MAX_ADDRESS_NUMBER);
-    const streetPrefix = randomElement(STREET_PREFIXES);
-    const streetSuffix = randomElement(STREET_SUFFIXES);
+    const streetPrefix = getRandomElement(STREET_PREFIXES);
+    const streetSuffix = getRandomElement(STREET_SUFFIXES);
     const streetName = `${streetPrefix} ${streetSuffix}`;
     const address = `${addressNumber} ${streetName}`;
     // locale
-    const cityName = randomElement(CITY_NAMES);
+    const cityName = getRandomElement(CITY_NAMES);
     const zipCode = CITY_CODES[cityName].zipCode;
     // phone
     const areaCode = CITY_CODES[cityName].areaCode;
     const phoneNumber = `${areaCode}${getPhoneNumber()}`;
 
-    let name;
-
-    // mutually exclusive elements
-    if (entryType === 'person') {
-      name = `${firstName} ${lastName}`;
-    } else if (entryType === 'business') {
-      let businessPrefix;
-
-      switch(true) {
-        case businessPrefixType === 'firstName':
-          businessPrefix = `${firstName}'s`;
-          break;
-        case businessPrefixType === 'lastName':
-          businessPrefix = lastName;
-          break;
-        case businessPrefixType === 'cityName':
-          businessPrefix = cityName;
-          break;
-        case businessPrefixType === 'streetName':
-          businessPrefix = streetName;
-          break;
-      }
-
-      name = `${businessPrefix} ${businessSuffix}`;
-    } else if (entryType === 'organization') {
-      name = `${cityName} ${organizationSuffix}`;
-    }
+    let name = getEntryName(streetName, cityName);
 
     // build it
     const entry = {
@@ -329,17 +293,60 @@ function generatePhoneBookEntries(num) {
   return phonebookEntries;
 }
 
-function randomElement(array) {
+function getRandomElement(array) {
   const index = getRandomNumberUpTo(array.length);
-  const element = array[index];
+  const randomElement = array[index];
 
-  return element;
+  return randomElement;
 }
 
 function getRandomNumberUpTo(max) {
   const random = Math.floor(Math.random() * max);
 
   return random;
+}
+
+function getEntryName(streetName, cityName) {
+  const entryType = getRandomElement(ENTRY_TYPES);
+  const firstName = getRandomElement(FIRST_NAMES);
+  const lastName = getRandomElement(LAST_NAMES);
+
+  let name;
+
+  if (entryType === 'person') {
+    name = `${firstName} ${lastName}`;
+  } else if (entryType === 'business') {
+    // easier to use a dict than a switch statement to assign prefix strings.
+    const prefixes = {
+      firstName: firstName,
+      lastName: lastName,
+      streetName: streetName,
+      cityName: cityName,
+    };
+    const businessPrefixType = getRandomElement(BUSINESS_PREFIX_TYPES);
+    const businessSuffix = getRandomElement(BUSINESS_SUFFIXES);
+    const businessPrefix = prefixes[businessPrefixType];
+
+    name = `${businessPrefix} ${businessSuffix}`;
+  } else if (entryType === 'organization') {
+    const organizationSuffix = getRandomElement(ORGANIZATION_SUFFIXES);
+
+    name = `${cityName} ${organizationSuffix}`;
+  }
+
+  return name;
+}
+
+function getPhoneNumber() {
+  let phoneNumberStr = '';
+
+  for (let i = 0; i < PHONE_NUMBER_LENGTH; i++) {
+    const digit = getRandomNumberUpTo(9);
+
+    phoneNumberStr += digit.toString();
+  }
+
+  return phoneNumberStr;
 }
 
 function saveJson(phonebookEntries) {
@@ -353,18 +360,6 @@ function saveJson(phonebookEntries) {
       console.log(jsonString);
     }
   });
-}
-
-function getPhoneNumber() {
-  let phoneNumberStr = '';
-
-  for (let i = 0; i < PHONE_NUMBER_LENGTH; i++) {
-    const digit = getRandomNumberUpTo(9);
-
-    phoneNumberStr += digit.toString();
-  }
-
-  return phoneNumberStr;
 }
 
 // MAIN
