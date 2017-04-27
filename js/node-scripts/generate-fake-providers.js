@@ -6,15 +6,26 @@ const MAX_ADDRESS_NUMBER = 5000;
 const PHONE_NUMBER_LENGTH = 10;
 const ENTRY_COUNT = 2000;
 
-// duplicate values adjust probabilities
+// duplicate values act as weights to adjust probabilities
 const ENTRY_TYPES = [
   'person',
   'person',
   'person',
   'person',
   'person',
-  'org',
-  'org',
+  'person',
+  'person',
+  'person',
+  'person',
+  'person',
+  'person',
+  'person',
+  'business',
+  'business',
+  'business',
+  'business',
+  'business',
+  'organization',
 ];
 
 const FIRST_NAMES = [
@@ -112,25 +123,52 @@ const LAST_NAMES = [
   'Zhukov',
 ];
 
-const ORG_TYPES = [
-  'locale',
-  'saint',
-  'saint',
-  'saint',
-  'saint',
-  'saint',
-  'saint',
+const BUSINESS_SUFFIXES = [
+  'Restaurant',
+  'Cafe',
+  'Bistro',
+  'Bakery',
+  'Garage',
+  'Motors',
+  'Salon',
+  'Boutique',
+  'Construction',
+  'Roofing',
+  'Plumbing',
+  'Dance Studio',
+  'Gallery',
+  'Day Care',
 ];
 
-const ORG_SUFFIXES = [
+const BUSINESS_PREFIX_TYPES = [
+  'firstName',
+  'firstName',
+  'firstName',
+  'firstName',
+  'lastName',
+  'lastName',
+  'lastName',
+  'lastName',
+  'streetName',
+  'streetName',
+  'streetName',
+  'streetName',
+  'cityName',
+];
+
+const ORGANIZATION_SUFFIXES = [
+  'Preschool',
+  'Elementary School',
+  'High School',
+  'College',
   'Hospital',
-  'Pediatric Hospital',
+  'Children\'s Hospital',
   'Medical Center',
-  'General Hospital',
-  'Trauma Center',
+  'Theater',
+  'Museum',
 ];
 
-const STREET_NAMES = [
+const STREET_PREFIXES = [
   'Main',
   'Oak',
   'Elm',
@@ -194,47 +232,66 @@ function generatePhoneBookEntries(num) {
   const phonebookEntries = [];
 
   for (let i = 0; i < num; i ++) {
-    const entry = {};
+    // basics
     const id = 1000 + i;
     const phoneNumber = getPhoneNumber();
-    // name
+    // type
+    const entryType = randomElement(ENTRY_TYPES);
+    // person
     const firstName = randomElement(FIRST_NAMES);
     const lastName = randomElement(LAST_NAMES);
+    // business
+    const businessPrefixType = randomElement(BUSINESS_PREFIX_TYPES);
+    const businessSuffix = randomElement(BUSINESS_SUFFIXES);
     // organization
-    const entryType = randomElement(ENTRY_TYPES);
-    const orgType = randomElement(ORG_TYPES);
-    const orgSuffix = randomElement(ORG_SUFFIXES);
+    const organizationSuffix = randomElement(ORGANIZATION_SUFFIXES);
     // address
     const addressNumber = getRandomNumberUpTo(MAX_ADDRESS_NUMBER);
-    const streetName = randomElement(STREET_NAMES);
-    const streetType = randomElement(STREET_SUFFIXES);
-    const address = `${addressNumber} ${streetName} ${streetType}`;
+    const streetPrefix = randomElement(STREET_PREFIXES);
+    const streetSuffix = randomElement(STREET_SUFFIXES);
+    const streetName = `${streetPrefix} ${streetSuffix}`;
+    const address = `${addressNumber} ${streetName}`;
     // locale
     const zipCode = randomElement(ZIP_CODES);
     const cityName = ZIP_CODES_TO_CITY_NAMES[zipCode];
 
+    let name;
+
     // mutually exclusive elements
     if (entryType === 'person') {
-      entry.first_name = firstName;
-      entry.last_name = lastName;
-    } else {
-      let orgName;
+      name = `${firstName} ${lastName}`;
+    } else if (entryType === 'business') {
+      let businessPrefix;
 
-      if (orgType === 'saint') {
-        orgName = `St. ${firstName}'s ${orgSuffix}`;
-      } else {
-        orgName = `${cityName} ${orgSuffix}`;
+      switch(true) {
+        case businessPrefixType === 'firstName':
+          businessPrefix = `${firstName}'s`;
+          break;
+        case businessPrefixType === 'lastName':
+          businessPrefix = lastName;
+          break;
+        case businessPrefixType === 'cityName':
+          businessPrefix = cityName;
+          break;
+        case businessPrefixType === 'streetName':
+          businessPrefix = streetName;
+          break;
       }
 
-      entry.organization_name = orgName;
+      name = `${businessPrefix} ${businessSuffix}`;
+    } else if (entryType === 'organization') {
+      name = `${cityName} ${organizationSuffix}`;
     }
 
     // build it
-    entry.address = address;
-    entry.city = cityName;
-    entry.zip = zipCode;
-    entry.phone = phoneNumber;
-    entry.id = id;
+    const entry = {
+      name: name,
+      address: address,
+      city: cityName,
+      zip: zipCode,
+      phone: phoneNumber,
+      id: id,
+    }
 
     phonebookEntries.push(entry);
   }

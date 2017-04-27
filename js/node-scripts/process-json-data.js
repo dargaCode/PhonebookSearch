@@ -52,22 +52,9 @@ function storeEntryInDict(entry, dict) {
   }
 }
 
-// we'll store each entry by first and last name, or all of the words in its org name. Then prefix searches will work for all the words in a query, so long as we filter the results in the browser script to results that match all queries.
+// we'll store each entry by all the words in its name, so searches can start with any word.
 function getEntryKeywords(entry) {
-  let keywords = [];
-
-  // people
-  if (entry.first_name) {
-    const firstName = entry.first_name;
-    const lastName = entry.last_name;
-
-    keywords = [firstName, lastName];
-  // organizations
-  } else {
-    const orgName = entry.organization_name;
-
-    keywords = orgName.split(' ');
-  }
+  const keywords = entry.name.split(' ');
 
   return keywords;
 }

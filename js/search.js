@@ -132,12 +132,12 @@ function bundleResults(resultIds, phonebookDict) {
     if (!duplicate) {
       idSet.add(resultId);
 
-      const resultDisplayName = getDisplayName(result);
+      const resultName = result.name;
       const resultZip = result.zip;
 
       // matching display name already tracked; add onto it
-      if (resultObj[resultDisplayName]) {
-        const existingResultBundle = resultObj[resultDisplayName];
+      if (resultObj[resultName]) {
+        const existingResultBundle = resultObj[resultName];
 
         existingResultBundle.locationSet.add(resultZip);
         existingResultBundle.results.push(result);
@@ -151,26 +151,12 @@ function bundleResults(resultIds, phonebookDict) {
         newResultBundle.locationSet.add(resultZip);
         newResultBundle.results.push(result);
 
-        resultObj[resultDisplayName] = newResultBundle;
+        resultObj[resultName] = newResultBundle;
       }
     }
   }
 
   return resultObj;
-}
-
-function getDisplayName(result) {
-  let displayName;
-
-  // person
-  if (result.first_name) {
-    displayName = `${result.first_name} ${result.last_name}`;
-  // organization
-  } else {
-    displayName = result.organization_name;
-  }
-
-  return displayName;
 }
 
 function addResultsToDom(resultObj, resultsModal) {
