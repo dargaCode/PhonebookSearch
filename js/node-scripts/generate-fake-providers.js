@@ -3,7 +3,7 @@
 
 const JSON_OUTPUT_PATH = `${__dirname}/../../data/phonebook-raw.json`;
 const MAX_ADDRESS_NUMBER = 5000;
-const PHONE_NUMBER_LENGTH = 10;
+const PHONE_NUMBER_LENGTH = 7;
 const ENTRY_COUNT = 2000;
 
 // duplicate values act as weights to adjust probabilities
@@ -198,28 +198,55 @@ const STREET_SUFFIXES = [
   'Lane',
 ];
 
-const ZIP_CODES = [
-  '11111',
-  '22222',
-  '33333',
-  '44444',
-  '55555',
-  '66666',
-  '77777',
-  '88888',
-  '99999',
+const CITY_NAMES = [
+  'Oceanside',
+  'Franklin',
+  'Greenville',
+  'Williamsport',
+  'Oakland',
+  'Fairview',
+  'Salem',
+  'Madison',
+  'Georgetown',
 ];
 
-const ZIP_CODES_TO_CITY_NAMES = {
-  11111: 'Oceanside',
-  22222: 'Franklin',
-  33333: 'Greenville',
-  44444: 'Williamsport',
-  55555: 'Oakland',
-  66666: 'Fairview',
-  77777: 'Salem',
-  88888: 'Madison',
-  99999: 'Georgetown',
+const CITY_CODES = {
+  'Oceanside': {
+    zipCode: '11111',
+    areaCode: '111',
+  },
+  'Franklin': {
+    zipCode: '22222',
+    areaCode: '222',
+  },
+  'Greenville': {
+    zipCode: '33333',
+    areaCode: '333',
+  },
+  'Williamsport': {
+    zipCode: '44444',
+    areaCode: '444',
+  },
+  'Oakland': {
+    zipCode: '55555',
+    areaCode: '555',
+  },
+  'Fairview': {
+    zipCode: '66666',
+    areaCode: '666',
+  },
+  'Salem': {
+    zipCode: '77777',
+    areaCode: '777',
+  },
+  'Madison': {
+    zipCode: '88888',
+    areaCode: '888',
+  },
+  'Georgetown': {
+    zipCode: '99999',
+    areaCode: '999',
+  },
 };
 
 // DEPENDENCIES
@@ -232,9 +259,8 @@ function generatePhoneBookEntries(num) {
   const phonebookEntries = [];
 
   for (let i = 0; i < num; i ++) {
-    // basics
+    // id
     const id = 1000 + i;
-    const phoneNumber = getPhoneNumber();
     // type
     const entryType = randomElement(ENTRY_TYPES);
     // person
@@ -252,8 +278,11 @@ function generatePhoneBookEntries(num) {
     const streetName = `${streetPrefix} ${streetSuffix}`;
     const address = `${addressNumber} ${streetName}`;
     // locale
-    const zipCode = randomElement(ZIP_CODES);
-    const cityName = ZIP_CODES_TO_CITY_NAMES[zipCode];
+    const cityName = randomElement(CITY_NAMES);
+    const zipCode = CITY_CODES[cityName].zipCode;
+    // phone
+    const areaCode = CITY_CODES[cityName].areaCode;
+    const phoneNumber = `${areaCode}${getPhoneNumber()}`;
 
     let name;
 
