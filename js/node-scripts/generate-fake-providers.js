@@ -2,6 +2,7 @@
 // CONSTANTS
 
 const JSON_OUTPUT_PATH = `${__dirname}/../../data/phonebook-raw.json`;
+const MINIMUM_ID = 1000;
 const MAX_ADDRESS_NUMBER = 5000;
 const PHONE_NUMBER_LENGTH = 7;
 const ENTRY_COUNT = 2000;
@@ -260,7 +261,7 @@ function generatePhoneBookEntries(num) {
 
   for (let i = 0; i < num; i ++) {
     // id
-    const id = 1000 + i;
+    const id = MINIMUM_ID + i;
     // type
     const entryType = randomElement(ENTRY_TYPES);
     // person
